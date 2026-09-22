@@ -22,9 +22,16 @@
                 </div>
             </div>
 
-            <div>
-                <label class="block font-semibold">Location:</label>
-                <input type="text" id="location" class="w-full border p-2 rounded" required>
+            <!-- Bagian Location dan Alamat yang baru ditambahkan -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold">Location (Kota/Kab):</label>
+                    <input type="text" id="location" class="w-full border p-2 rounded" required placeholder="Contoh: Kab. Ketapang">
+                </div>
+                <div>
+                    <label class="block font-semibold">Alamat Lengkap:</label>
+                    <input type="text" id="alamat" class="w-full border p-2 rounded" placeholder="Contoh: Kalimantan Barat">
+                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 bg-blue-50 p-4 rounded border border-blue-200">
@@ -37,7 +44,7 @@
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer text-blue-700">
                         <input type="checkbox" id="has_recycle" onchange="adjustTags()">
-                        <span>Flow Recycle</span>
+                        <span>Flow Recycle (RO 25/30)</span>
                     </label>
                 </div>
                 <div>
@@ -111,7 +118,6 @@
     </div>
 
     <script>
-        // Data Checklist Kombinasi
         const roOnlyList = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank.\n(   ) Outlet reject line RO properly joined to water drain line.";
         const ufRoList = "(   ) Inlet raw water line properly joined to UF Feed Pump.\n(   ) Outlet UF Permeate properly joined to RO Feed Pump.\n(   ) Outlet product RO properly joined to Product tank.\n(   ) Outlet reject RO properly joined to drain line."; 
         const softenerRoList = "(   ) Inlet raw water properly joined to Softener.\n(   ) Outlet Softener properly joined to RO Feed Pump.\n(   ) Brine tank joined to Softener injection line.\n(   ) Outlet product RO properly joined to Product tank.";
@@ -124,13 +130,11 @@
             const hasSoftener = document.getElementById('has_softener').checked;
             const hasRecycle = document.getElementById('has_recycle').checked;
             
-            // Sembunyikan/Tampilkan Form Tag
             document.getElementById('ro_tags_container').classList.toggle('hidden', !hasRO);
             document.getElementById('uf_tags_container').classList.toggle('hidden', !hasUF);
             document.getElementById('softener_tags_container').classList.toggle('hidden', !hasSoftener);
             document.getElementById('recycle_tag_wrapper').classList.toggle('hidden', !hasRecycle);
 
-            // Geser Tag RO (hanya jika ada RO dan UF)
             if (hasRO && hasUF) {
                 document.getElementById('tag_pi_01').value = 'PI-05'; document.getElementById('tag_pi_02').value = 'PI-06';
                 document.getElementById('tag_pi_03').value = 'PI-07'; document.getElementById('tag_pi_04').value = 'PI-08';
@@ -153,7 +157,6 @@
             const hasSoftener = document.getElementById('has_softener').checked;
             const hasRecycle = document.getElementById('has_recycle').checked;
             
-            // Penentuan Checklist Pintar
             let activeChecklist = "(   ) Checklist belum didefinisikan.";
             if (hasUF && !hasRO && !hasSoftener) activeChecklist = ufOnlyList;
             else if (hasSoftener && !hasRO && !hasUF) activeChecklist = softenerOnlyList;
@@ -170,6 +173,7 @@
                 company_name: document.getElementById('company_name').value,
                 po_number: document.getElementById('po_number').value,
                 location: document.getElementById('location').value,
+                alamat: document.getElementById('alamat').value, // Menarik nilai alamat
                 owner_company: document.getElementById('company_name').value,
                 owner_name: document.getElementById('owner_name').value,
                 contractor_name: document.getElementById('contractor_name').value,
