@@ -36,9 +36,30 @@
                 </div>
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer">
-                        <input type="checkbox" id="has_softener">
+                        <input type="checkbox" id="has_softener" onchange="adjustTags()">
                         <span>Sistem Memiliki Softener</span>
                     </label>
+                </div>
+            </div>
+
+            <!-- Form Tag P&ID UF (Muncul jika dicentang) -->
+            <div id="uf_tags_container" class="bg-blue-100 p-4 rounded mt-2 hidden">
+                <h3 class="font-bold mb-2">Tag P&ID Ultra Filtrasi (UF)</h3>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <div><label>PS UF Feed:</label><input type="text" id="tag_ps_uf_feed" class="w-full border p-1" value="PS-XX"></div>
+                    <div><label>PS UF BW:</label><input type="text" id="tag_ps_uf_bw" class="w-full border p-1" value="PS-XX"></div>
+                    <div><label>PI Inlet UF:</label><input type="text" id="tag_pi_uf_in" class="w-full border p-1" value="PI-XX"></div>
+                    <div><label>PI Outlet UF:</label><input type="text" id="tag_pi_uf_out" class="w-full border p-1" value="PI-XX"></div>
+                    <div><label>FI Product UF:</label><input type="text" id="tag_fi_uf" class="w-full border p-1" value="FI-XX"></div>
+                </div>
+            </div>
+
+            <!-- Form Tag P&ID Softener (Muncul jika dicentang) -->
+            <div id="softener_tags_container" class="bg-green-100 p-4 rounded mt-2 hidden">
+                <h3 class="font-bold mb-2">Tag P&ID Softener</h3>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div><label>PI Inlet Softener:</label><input type="text" id="tag_pi_soft_in" class="w-full border p-1" value="PI-XX"></div>
+                    <div><label>PI Outlet Softener:</label><input type="text" id="tag_pi_soft_out" class="w-full border p-1" value="PI-XX"></div>
                 </div>
             </div>
 
@@ -74,12 +95,21 @@
     </div>
 
     <script>
-        const standardChecklist = "( v ) Power supply properly joined to electrical Control panel.\n( v ) Inlet raw water line properly joined to Inlet RO.\n( v ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n( v ) Outlet reject line RO properly joined to water drain line\n( v ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n( v ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n( v ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
+        const standardChecklist = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n(   ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
         
-        const ufChecklist = "( v ) Inlet UF Feed Water Pump properly joined to raw water line.\n( v ) Outlet UF Feed Water Pump properly joined to inlet UF\n( v ) Outlet UF properly joined to UF Permeate Storage Tank\n( v ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n( v ) Outlet product line RO properly joined to Product water storage tank\n( v ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n( v ) Outlet reject line RO properly joined to water drain line"; 
+        const ufChecklist = "(   ) Inlet UF Feed Water Pump properly joined to raw water line.\n(   ) Outlet UF Feed Water Pump properly joined to inlet UF\n(   ) Outlet UF properly joined to UF Permeate Storage Tank\n(   ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n(   ) Outlet product line RO properly joined to Product water storage tank\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line"; 
+
+        const softenerChecklist = "(   ) Softener Feed Pump properly joined to raw water line.\n(   ) Outlet Softener properly joined to inlet RO\n(   ) Brine tank properly joined to Softener injection line\n(   ) Outlet product line RO properly joined to Product water storage tank\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line";
 
         function adjustTags() {
             const hasUF = document.getElementById('has_uf').checked;
+            const hasSoftener = document.getElementById('has_softener').checked;
+            
+            // Menampilkan atau menyembunyikan kotak input tambahan
+            document.getElementById('uf_tags_container').classList.toggle('hidden', !hasUF);
+            document.getElementById('softener_tags_container').classList.toggle('hidden', !hasSoftener);
+
+            // Geser Tag RO secara otomatis
             if (hasUF) {
                 document.getElementById('tag_pi_01').value = 'PI-05'; document.getElementById('tag_pi_02').value = 'PI-06';
                 document.getElementById('tag_pi_03').value = 'PI-07'; document.getElementById('tag_pi_04').value = 'PI-08';
@@ -97,6 +127,16 @@
             resDiv.classList.remove('hidden');
             resDiv.innerHTML = "<p class='text-blue-600'>⏳ Membuat dokumen... Mohon tunggu sekitar 5 detik.</p>";
 
+            const hasUF = document.getElementById('has_uf').checked;
+            const hasSoftener = document.getElementById('has_softener').checked;
+            
+            let activeChecklist = standardChecklist;
+            if (hasUF) {
+                activeChecklist = ufChecklist;
+            } else if (hasSoftener) {
+                activeChecklist = softenerChecklist;
+            }
+
             const payload = {
                 company_name: document.getElementById('company_name').value,
                 po_number: document.getElementById('po_number').value,
@@ -104,16 +144,27 @@
                 owner_company: document.getElementById('company_name').value,
                 owner_name: document.getElementById('owner_name').value,
                 contractor_name: document.getElementById('contractor_name').value,
-                has_uf: document.getElementById('has_uf').checked,
-                has_softener: document.getElementById('has_softener').checked,
-                checklist_items: document.getElementById('has_uf').checked ? ufChecklist : standardChecklist,
+                has_uf: hasUF,
+                has_softener: hasSoftener,
+                checklist_items: activeChecklist,
+                
+                // Variabel Tag RO
                 tag_pi_01: document.getElementById('tag_pi_01').value,
                 tag_pi_02: document.getElementById('tag_pi_02').value,
                 tag_pi_03: document.getElementById('tag_pi_03').value,
                 tag_pi_04: document.getElementById('tag_pi_04').value,
                 tag_pi_05: document.getElementById('tag_pi_05').value,
                 tag_pi_06: document.getElementById('tag_pi_06').value,
-                tag_fi_01: "FI-01", tag_fi_02: "FI-02"
+                tag_fi_01: "FI-01", tag_fi_02: "FI-02",
+
+                // Variabel Tag UF & Softener ditarik dari form baru
+                tag_ps_uf_feed: document.getElementById('tag_ps_uf_feed').value,
+                tag_ps_uf_bw: document.getElementById('tag_ps_uf_bw').value,
+                tag_pi_uf_in: document.getElementById('tag_pi_uf_in').value,
+                tag_pi_uf_out: document.getElementById('tag_pi_uf_out').value,
+                tag_fi_uf: document.getElementById('tag_fi_uf').value,
+                tag_pi_soft_in: document.getElementById('tag_pi_soft_in').value,
+                tag_pi_soft_out: document.getElementById('tag_pi_soft_out').value
             };
 
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbwjZ-4lOmSdhfI-eoreyOqyA0PqA_CTw5ZHr5itfEnMj862AxGhSBNqw8rDiF7X67vA3A/exec'; 
