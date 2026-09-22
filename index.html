@@ -27,22 +27,41 @@
                 <input type="text" id="location" class="w-full border p-2 rounded" required>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-4 bg-blue-50 p-4 rounded">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-blue-50 p-4 rounded border border-blue-200">
+                <div>
+                    <label class="flex items-center space-x-2 font-semibold cursor-pointer">
+                        <input type="checkbox" id="has_ro" checked onchange="adjustTags()">
+                        <span>Sistem Reverse Osmosis (RO)</span>
+                    </label>
+                </div>
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_uf" onchange="adjustTags()">
-                        <span>Sistem Memiliki Ultra Filtrasi (UF)</span>
+                        <span>Sistem Ultra Filtrasi (UF)</span>
                     </label>
                 </div>
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_softener" onchange="adjustTags()">
-                        <span>Sistem Memiliki Softener</span>
+                        <span>Sistem Softener</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Form Tag P&ID UF (Muncul jika dicentang) -->
+            <!-- Form Tag P&ID RO -->
+            <div id="ro_tags_container" class="bg-gray-50 p-4 rounded mt-2">
+                <h3 class="font-bold mb-2">Tag P&ID Reverse Osmosis (Auto-Adjust)</h3>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <input type="text" id="tag_pi_01" class="border p-1" value="PI-01">
+                    <input type="text" id="tag_pi_02" class="border p-1" value="PI-02">
+                    <input type="text" id="tag_pi_03" class="border p-1" value="PI-03">
+                    <input type="text" id="tag_pi_04" class="border p-1" value="PI-04">
+                    <input type="text" id="tag_pi_05" class="border p-1" value="PI-05">
+                    <input type="text" id="tag_pi_06" class="border p-1" value="PI-06">
+                </div>
+            </div>
+
+            <!-- Form Tag P&ID UF -->
             <div id="uf_tags_container" class="bg-blue-100 p-4 rounded mt-2 hidden">
                 <h3 class="font-bold mb-2">Tag P&ID Ultra Filtrasi (UF)</h3>
                 <div class="grid grid-cols-3 gap-2 text-sm">
@@ -54,24 +73,12 @@
                 </div>
             </div>
 
-            <!-- Form Tag P&ID Softener (Muncul jika dicentang) -->
+            <!-- Form Tag P&ID Softener -->
             <div id="softener_tags_container" class="bg-green-100 p-4 rounded mt-2 hidden">
                 <h3 class="font-bold mb-2">Tag P&ID Softener</h3>
                 <div class="grid grid-cols-2 gap-2 text-sm">
                     <div><label>PI Inlet Softener:</label><input type="text" id="tag_pi_soft_in" class="w-full border p-1" value="PI-XX"></div>
                     <div><label>PI Outlet Softener:</label><input type="text" id="tag_pi_soft_out" class="w-full border p-1" value="PI-XX"></div>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-4 rounded">
-                <h3 class="font-bold mb-2">Tag P&ID Reverse Osmosis (Auto-Adjust)</h3>
-                <div class="grid grid-cols-3 gap-2 text-sm">
-                    <input type="text" id="tag_pi_01" class="border p-1" value="PI-01">
-                    <input type="text" id="tag_pi_02" class="border p-1" value="PI-02">
-                    <input type="text" id="tag_pi_03" class="border p-1" value="PI-03">
-                    <input type="text" id="tag_pi_04" class="border p-1" value="PI-04">
-                    <input type="text" id="tag_pi_05" class="border p-1" value="PI-05">
-                    <input type="text" id="tag_pi_06" class="border p-1" value="PI-06">
                 </div>
             </div>
 
@@ -95,22 +102,25 @@
     </div>
 
     <script>
-        const standardChecklist = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n(   ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
-        
-        const ufChecklist = "(   ) Inlet UF Feed Water Pump properly joined to raw water line.\n(   ) Outlet UF Feed Water Pump properly joined to inlet UF\n(   ) Outlet UF properly joined to UF Permeate Storage Tank\n(   ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n(   ) Outlet product line RO properly joined to Product water storage tank\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line"; 
-
-        const softenerChecklist = "(   ) Softener Feed Pump properly joined to raw water line.\n(   ) Outlet Softener properly joined to inlet RO\n(   ) Brine tank properly joined to Softener injection line\n(   ) Outlet product line RO properly joined to Product water storage tank\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line";
+        // Data Checklist Kombinasi
+        const roOnlyList = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank.\n(   ) Outlet reject line RO properly joined to water drain line.";
+        const ufRoList = "(   ) Inlet raw water line properly joined to UF Feed Pump.\n(   ) Outlet UF Permeate properly joined to RO Feed Pump.\n(   ) Outlet product RO properly joined to Product tank.\n(   ) Outlet reject RO properly joined to drain line."; 
+        const softenerRoList = "(   ) Inlet raw water properly joined to Softener.\n(   ) Outlet Softener properly joined to RO Feed Pump.\n(   ) Brine tank joined to Softener injection line.\n(   ) Outlet product RO properly joined to Product tank.";
+        const ufOnlyList = "(   ) Inlet raw water line properly joined to UF Feed Pump.\n(   ) Outlet UF Feed Pump properly joined to inlet UF.\n(   ) Outlet product UF properly joined to Product tank.\n(   ) Outlet backwash properly joined to drain line.";
+        const softenerOnlyList = "(   ) Inlet raw water line properly joined to Softener Feed Pump.\n(   ) Outlet Softener properly joined to Product tank.\n(   ) Brine tank properly joined to Softener injection line.\n(   ) Drain line properly joined to open drain.";
 
         function adjustTags() {
+            const hasRO = document.getElementById('has_ro').checked;
             const hasUF = document.getElementById('has_uf').checked;
             const hasSoftener = document.getElementById('has_softener').checked;
             
-            // Menampilkan atau menyembunyikan kotak input tambahan
+            // Sembunyikan/Tampilkan Form Tag
+            document.getElementById('ro_tags_container').classList.toggle('hidden', !hasRO);
             document.getElementById('uf_tags_container').classList.toggle('hidden', !hasUF);
             document.getElementById('softener_tags_container').classList.toggle('hidden', !hasSoftener);
 
-            // Geser Tag RO secara otomatis
-            if (hasUF) {
+            // Geser Tag RO (hanya jika ada RO dan UF)
+            if (hasRO && hasUF) {
                 document.getElementById('tag_pi_01').value = 'PI-05'; document.getElementById('tag_pi_02').value = 'PI-06';
                 document.getElementById('tag_pi_03').value = 'PI-07'; document.getElementById('tag_pi_04').value = 'PI-08';
                 document.getElementById('tag_pi_05').value = 'PI-09'; document.getElementById('tag_pi_06').value = 'PI-10';
@@ -127,14 +137,21 @@
             resDiv.classList.remove('hidden');
             resDiv.innerHTML = "<p class='text-blue-600'>⏳ Membuat dokumen... Mohon tunggu sekitar 5 detik.</p>";
 
+            const hasRO = document.getElementById('has_ro').checked;
             const hasUF = document.getElementById('has_uf').checked;
             const hasSoftener = document.getElementById('has_softener').checked;
             
-            let activeChecklist = standardChecklist;
-            if (hasUF) {
-                activeChecklist = ufChecklist;
-            } else if (hasSoftener) {
-                activeChecklist = softenerChecklist;
+            // Penentuan Checklist Pintar
+            let activeChecklist = "(   ) Checklist belum didefinisikan.";
+            if (hasUF && !hasRO && !hasSoftener) activeChecklist = ufOnlyList;
+            else if (hasSoftener && !hasRO && !hasUF) activeChecklist = softenerOnlyList;
+            else if (hasUF && hasRO) activeChecklist = ufRoList;
+            else if (hasSoftener && hasRO) activeChecklist = softenerRoList;
+            else if (hasRO) activeChecklist = roOnlyList;
+            
+            if (!hasRO && !hasUF && !hasSoftener) {
+                resDiv.innerHTML = "<p class='text-red-600'>Mohon centang minimal satu jenis sistem (RO, UF, atau Softener).</p>";
+                return;
             }
 
             const payload = {
@@ -144,11 +161,11 @@
                 owner_company: document.getElementById('company_name').value,
                 owner_name: document.getElementById('owner_name').value,
                 contractor_name: document.getElementById('contractor_name').value,
+                has_ro: hasRO,
                 has_uf: hasUF,
                 has_softener: hasSoftener,
                 checklist_items: activeChecklist,
                 
-                // Variabel Tag RO
                 tag_pi_01: document.getElementById('tag_pi_01').value,
                 tag_pi_02: document.getElementById('tag_pi_02').value,
                 tag_pi_03: document.getElementById('tag_pi_03').value,
@@ -157,7 +174,6 @@
                 tag_pi_06: document.getElementById('tag_pi_06').value,
                 tag_fi_01: "FI-01", tag_fi_02: "FI-02",
 
-                // Variabel Tag UF & Softener ditarik dari form baru
                 tag_ps_uf_feed: document.getElementById('tag_ps_uf_feed').value,
                 tag_ps_uf_bw: document.getElementById('tag_ps_uf_bw').value,
                 tag_pi_uf_in: document.getElementById('tag_pi_uf_in').value,
@@ -175,7 +191,6 @@
                 
                 if(data.status === 'success') {
                     const wordDownloadUrl = `https://docs.google.com/document/d/${data.documentId}/export?format=docx`;
-                    
                     resDiv.innerHTML = `
                         <p class='text-green-600 mb-4'>✅ Dokumen Berhasil Dibuat!</p>
                         <a href="${wordDownloadUrl}" class="bg-green-600 text-white font-bold py-3 px-6 rounded shadow-md hover:bg-green-700 transition w-full max-w-sm block text-center">
