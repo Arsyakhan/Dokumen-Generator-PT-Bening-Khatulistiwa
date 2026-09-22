@@ -116,8 +116,7 @@
                 tag_fi_01: "FI-01", tag_fi_02: "FI-02"
             };
 
-            // !!! GANTI DENGAN URL GOOGLE APPS SCRIPT ANDA !!!
-            const scriptUrl = 'MASUKKAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_DI_SINI'; 
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwjZ-4lOmSdhfI-eoreyOqyA0PqA_CTw5ZHr5itfEnMj862AxGhSBNqw8rDiF7X67vA3A/exec'; 
             
             try {
                 const response = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify(payload) });
