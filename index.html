@@ -11,6 +11,12 @@
         <h2 class="text-2xl font-bold mb-6 text-blue-600 border-b pb-2">Generator Commissioning Report</h2>
         
         <form id="commForm" class="space-y-4">
+            
+            <div class="bg-yellow-50 p-4 rounded border border-yellow-200 mb-4">
+                <label class="block font-semibold text-gray-800">Nama File Output:</label>
+                <input type="text" id="file_name" class="w-full border p-2 rounded mt-1 font-mono text-sm" required placeholder="Comm Report - PT ...">
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block font-semibold">Company Name:</label>
@@ -22,10 +28,9 @@
                 </div>
             </div>
 
-            <!-- Bagian Location dan Alamat yang baru ditambahkan -->
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold">Location:</label>
+                    <label class="block font-semibold">Location (Kota/Kab):</label>
                     <input type="text" id="location" class="w-full border p-2 rounded" required placeholder="Contoh: Kab. Ketapang">
                 </div>
                 <div>
@@ -118,9 +123,18 @@
     </div>
 
     <script>
-        const roOnlyList = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank.\n(   ) Outlet reject line RO properly joined to water drain line.";
-        const ufRoList = "(   ) Inlet raw water line properly joined to UF Feed Pump.\n(   ) Outlet UF Permeate properly joined to RO Feed Pump.\n(   ) Outlet product RO properly joined to Product tank.\n(   ) Outlet reject RO properly joined to drain line."; 
-        const softenerRoList = "(   ) Inlet raw water properly joined to Softener.\n(   ) Outlet Softener properly joined to RO Feed Pump.\n(   ) Brine tank joined to Softener injection line.\n(   ) Outlet product RO properly joined to Product tank.";
+        // Fitur Auto-Fill Nama File berdasarkan Company Name
+        document.getElementById('company_name').addEventListener('input', function() {
+            if(this.value.trim() !== '') {
+                document.getElementById('file_name').value = 'Comm Report - ' + this.value;
+            } else {
+                document.getElementById('file_name').value = '';
+            }
+        });
+
+        const roOnlyList = "(   ) Power supply properly joined to electrical Control panel.\n(   ) Inlet raw water line properly joined to Inlet RO.\n(   ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n(   ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
+        const ufRoList = "(   ) Inlet UF Feed Water Pump properly joined to raw water line.\n(   ) Outlet UF Feed Water Pump properly joined to inlet UF\n(   ) Outlet UF properly joined to UF Permeate Storage Tank\n(   ) Outlet UF properly joined to Backwash Pump line\n(   ) Outlet cleaning UF properly joined to UF Cleaning Tank\n(   ) Drain line UF properly joined to drained line\n(   ) Inlet UF Backwash pump properly joined to UF Permeate Storage Tank and UF Cleaning Tank\n(   ) Outlet Backwash pump properly joined to Blower line and UF product line and UF Cleaning tank\n(   ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n(   ) RO Feed Water Pump outlet properly joined to Inlet Cartridge Filter\n(   ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter\n(   ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n(   ) Outlet reject line RO properly joined to water drain line\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n(   ) Power supply properly joined to electrical Control Panel"; 
+        const softenerRoList = "(   ) Outlet UF properly joined to New UF Permeate Tank\n(   ) Softener & RO Feed Pump inlet properly joined to UF Permeate Tank\n(   ) Softener & RO Feed Pump outlet properly joined to Inlet Softener\n(   ) Brine line properly joined to Softener injection line\n(   ) Inlet RO properly joined to outlet Softener line\n(   ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n(   ) Outlet Reject line RO properly joined to UF Permeate Tank and drain line\n(   ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n(   ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n(   ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter\n(   ) Water drain nozzle properly joined to water drain line.\n(   ) Power supply to electrical panel properly installed.\n(   ) Power supply properly joined to electrical Control panel.";
         const ufOnlyList = "(   ) Inlet raw water line properly joined to UF Feed Pump.\n(   ) Outlet UF Feed Pump properly joined to inlet UF.\n(   ) Outlet product UF properly joined to Product tank.\n(   ) Outlet backwash properly joined to drain line.";
         const softenerOnlyList = "(   ) Inlet raw water line properly joined to Softener Feed Pump.\n(   ) Outlet Softener properly joined to Product tank.\n(   ) Brine tank properly joined to Softener injection line.\n(   ) Drain line properly joined to open drain.";
 
@@ -170,10 +184,11 @@
             }
 
             const payload = {
+                file_name: document.getElementById('file_name').value, // Variabel file name baru
                 company_name: document.getElementById('company_name').value,
                 po_number: document.getElementById('po_number').value,
                 location: document.getElementById('location').value,
-                alamat: document.getElementById('alamat').value, // Menarik nilai alamat
+                alamat: document.getElementById('alamat').value, 
                 owner_company: document.getElementById('company_name').value,
                 owner_name: document.getElementById('owner_name').value,
                 contractor_name: document.getElementById('contractor_name').value,
@@ -212,7 +227,7 @@
                 if(data.status === 'success') {
                     const wordDownloadUrl = `https://docs.google.com/document/d/${data.documentId}/export?format=docx`;
                     resDiv.innerHTML = `
-                        <p class='text-green-600 mb-4'>✅ Dokumen Berhasil Dibuat!</p>
+                        <p class='text-green-600 mb-4'>✅ Dokumen <b>${data.fileName}</b> Berhasil Dibuat!</p>
                         <a href="${wordDownloadUrl}" class="bg-green-600 text-white font-bold py-3 px-6 rounded shadow-md hover:bg-green-700 transition w-full max-w-sm block text-center">
                             📥 Download File MS Word (.docx)
                         </a>
