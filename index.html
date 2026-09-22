@@ -29,13 +29,13 @@
 
             <div class="grid grid-cols-2 gap-4 mt-4 bg-blue-50 p-4 rounded">
                 <div>
-                    <label class="flex items-center space-x-2 font-semibold">
+                    <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_uf" onchange="adjustTags()">
                         <span>Sistem Memiliki Ultra Filtrasi (UF)</span>
                     </label>
                 </div>
                 <div>
-                    <label class="flex items-center space-x-2 font-semibold">
+                    <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_softener">
                         <span>Sistem Memiliki Softener</span>
                     </label>
@@ -70,23 +70,21 @@
             </button>
         </form>
 
-        <div id="result" class="mt-6 text-center text-lg font-semibold hidden"></div>
+        <div id="result" class="mt-6 text-center text-lg font-semibold hidden flex flex-col items-center"></div>
     </div>
 
     <script>
         const standardChecklist = "( v ) Power supply properly joined to electrical Control panel.\n( v ) Inlet raw water line properly joined to Inlet RO.\n( v ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n( v ) Outlet reject line RO properly joined to water drain line\n( v ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n( v ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n( v ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
         
-        const ufChecklist = "( v ) Inlet UF Feed Water Pump properly joined to raw water line.\n( v ) Outlet UF Feed Water Pump properly joined to inlet UF\n( v ) Outlet UF properly joined to UF Permeate Storage Tank\n( v ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n( v ) Outlet product line RO properly joined to Product water storage tank"; // (Disimulasi, Anda bisa melengkapi teksnya nanti)
+        const ufChecklist = "( v ) Inlet UF Feed Water Pump properly joined to raw water line.\n( v ) Outlet UF Feed Water Pump properly joined to inlet UF\n( v ) Outlet UF properly joined to UF Permeate Storage Tank\n( v ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n( v ) Outlet product line RO properly joined to Product water storage tank\n( v ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n( v ) Outlet reject line RO properly joined to water drain line"; 
 
         function adjustTags() {
             const hasUF = document.getElementById('has_uf').checked;
             if (hasUF) {
-                // Jika ada UF, Tag RO bergeser ke PI-05 dst.
                 document.getElementById('tag_pi_01').value = 'PI-05'; document.getElementById('tag_pi_02').value = 'PI-06';
                 document.getElementById('tag_pi_03').value = 'PI-07'; document.getElementById('tag_pi_04').value = 'PI-08';
                 document.getElementById('tag_pi_05').value = 'PI-09'; document.getElementById('tag_pi_06').value = 'PI-10';
             } else {
-                // Standar RO
                 document.getElementById('tag_pi_01').value = 'PI-01'; document.getElementById('tag_pi_02').value = 'PI-02';
                 document.getElementById('tag_pi_03').value = 'PI-03'; document.getElementById('tag_pi_04').value = 'PI-04';
                 document.getElementById('tag_pi_05').value = 'PI-05'; document.getElementById('tag_pi_06').value = 'PI-06';
@@ -96,8 +94,8 @@
         document.getElementById('commForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const resDiv = document.getElementById('result');
-            resDiv.classList.remove('hidden', 'text-red-600', 'text-green-600');
-            resDiv.innerText = "Membuat dokumen... Mohon tunggu sekitar 5 detik.";
+            resDiv.classList.remove('hidden');
+            resDiv.innerHTML = "<p class='text-blue-600'>⏳ Membuat dokumen... Mohon tunggu sekitar 5 detik.</p>";
 
             const payload = {
                 company_name: document.getElementById('company_name').value,
@@ -118,23 +116,30 @@
                 tag_fi_01: "FI-01", tag_fi_02: "FI-02"
             };
 
-            // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwjZ-4lOmSdhfI-eoreyOqyA0PqA_CTw5ZHr5itfEnMj862AxGhSBNqw8rDiF7X67vA3A/exec'; 
+            // !!! GANTI DENGAN URL GOOGLE APPS SCRIPT ANDA !!!
+            const scriptUrl = 'MASUKKAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_DI_SINI'; 
             
             try {
                 const response = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify(payload) });
                 const data = await response.json();
                 
                 if(data.status === 'success') {
-                    resDiv.classList.add('text-green-600');
-                    resDiv.innerHTML = `✅ Berhasil! <a href="${data.documentUrl}" target="_blank" class="underline text-blue-700">Klik di sini untuk membuka dokumen</a>`;
+                    const wordDownloadUrl = `https://docs.google.com/document/d/${data.documentId}/export?format=docx`;
+                    
+                    resDiv.innerHTML = `
+                        <p class='text-green-600 mb-4'>✅ Dokumen Berhasil Dibuat!</p>
+                        <a href="${wordDownloadUrl}" class="bg-green-600 text-white font-bold py-3 px-6 rounded shadow-md hover:bg-green-700 transition w-full max-w-sm block text-center">
+                            📥 Download File MS Word (.docx)
+                        </a>
+                        <a href="${data.documentUrl}" target="_blank" class="mt-4 text-sm underline text-blue-700 block">
+                            Atau pratinjau di Google Docs
+                        </a>
+                    `;
                 } else {
-                    resDiv.classList.add('text-red-600');
-                    resDiv.innerText = "Error: " + data.message;
+                    resDiv.innerHTML = "<p class='text-red-600'>Error: " + data.message + "</p>";
                 }
             } catch (err) {
-                resDiv.classList.add('text-red-600');
-                resDiv.innerText = "Gagal menghubungi server.";
+                resDiv.innerHTML = "<p class='text-red-600'>Gagal menghubungi server.</p>";
             }
         });
     </script>
