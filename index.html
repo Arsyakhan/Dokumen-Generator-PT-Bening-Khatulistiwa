@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comm Report Generator - PT Bening Khatulistiwa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans p-6">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-blue-600 border-b pb-2">Generator Commissioning Report</h2>
+        
+        <form id="commForm" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-semibold">Company Name:</label>
+                    <input type="text" id="company_name" class="w-full border p-2 rounded" required placeholder="PT Tirta Kimia">
+                </div>
+                <div>
+                    <label class="block font-semibold">PO Number:</label>
+                    <input type="text" id="po_number" class="w-full border p-2 rounded" required>
+                </div>
+            </div>
+
+            <div>
+                <label class="block font-semibold">Location:</label>
+                <input type="text" id="location" class="w-full border p-2 rounded" required>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-4 bg-blue-50 p-4 rounded">
+                <div>
+                    <label class="flex items-center space-x-2 font-semibold">
+                        <input type="checkbox" id="has_uf" onchange="adjustTags()">
+                        <span>Sistem Memiliki Ultra Filtrasi (UF)</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="flex items-center space-x-2 font-semibold">
+                        <input type="checkbox" id="has_softener">
+                        <span>Sistem Memiliki Softener</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded">
+                <h3 class="font-bold mb-2">Tag P&ID Reverse Osmosis (Auto-Adjust)</h3>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <input type="text" id="tag_pi_01" class="border p-1" value="PI-01">
+                    <input type="text" id="tag_pi_02" class="border p-1" value="PI-02">
+                    <input type="text" id="tag_pi_03" class="border p-1" value="PI-03">
+                    <input type="text" id="tag_pi_04" class="border p-1" value="PI-04">
+                    <input type="text" id="tag_pi_05" class="border p-1" value="PI-05">
+                    <input type="text" id="tag_pi_06" class="border p-1" value="PI-06">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-4">
+                <div>
+                    <label class="block font-semibold">Owner / Client Authorized Person:</label>
+                    <input type="text" id="owner_name" class="w-full border p-2 rounded" required>
+                </div>
+                <div>
+                    <label class="block font-semibold">Contractor (Engineer PT Bening):</label>
+                    <input type="text" id="contractor_name" class="w-full border p-2 rounded" value="Syafiq Khanafi Arifin">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded hover:bg-blue-700 transition">
+                Generate Dokumen
+            </button>
+        </form>
+
+        <div id="result" class="mt-6 text-center text-lg font-semibold hidden"></div>
+    </div>
+
+    <script>
+        const standardChecklist = "( v ) Power supply properly joined to electrical Control panel.\n( v ) Inlet raw water line properly joined to Inlet RO.\n( v ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank\n( v ) Outlet reject line RO properly joined to water drain line\n( v ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank\n( v ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump\n( v ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter";
+        
+        const ufChecklist = "( v ) Inlet UF Feed Water Pump properly joined to raw water line.\n( v ) Outlet UF Feed Water Pump properly joined to inlet UF\n( v ) Outlet UF properly joined to UF Permeate Storage Tank\n( v ) RO Feed Water Pump inlet properly joined to UF Permeate Storage Tank\n( v ) Outlet product line RO properly joined to Product water storage tank"; // (Disimulasi, Anda bisa melengkapi teksnya nanti)
+
+        function adjustTags() {
+            const hasUF = document.getElementById('has_uf').checked;
+            if (hasUF) {
+                // Jika ada UF, Tag RO bergeser ke PI-05 dst.
+                document.getElementById('tag_pi_01').value = 'PI-05'; document.getElementById('tag_pi_02').value = 'PI-06';
+                document.getElementById('tag_pi_03').value = 'PI-07'; document.getElementById('tag_pi_04').value = 'PI-08';
+                document.getElementById('tag_pi_05').value = 'PI-09'; document.getElementById('tag_pi_06').value = 'PI-10';
+            } else {
+                // Standar RO
+                document.getElementById('tag_pi_01').value = 'PI-01'; document.getElementById('tag_pi_02').value = 'PI-02';
+                document.getElementById('tag_pi_03').value = 'PI-03'; document.getElementById('tag_pi_04').value = 'PI-04';
+                document.getElementById('tag_pi_05').value = 'PI-05'; document.getElementById('tag_pi_06').value = 'PI-06';
+            }
+        }
+
+        document.getElementById('commForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const resDiv = document.getElementById('result');
+            resDiv.classList.remove('hidden', 'text-red-600', 'text-green-600');
+            resDiv.innerText = "Membuat dokumen... Mohon tunggu sekitar 5 detik.";
+
+            const payload = {
+                company_name: document.getElementById('company_name').value,
+                po_number: document.getElementById('po_number').value,
+                location: document.getElementById('location').value,
+                owner_company: document.getElementById('company_name').value,
+                owner_name: document.getElementById('owner_name').value,
+                contractor_name: document.getElementById('contractor_name').value,
+                has_uf: document.getElementById('has_uf').checked,
+                has_softener: document.getElementById('has_softener').checked,
+                checklist_items: document.getElementById('has_uf').checked ? ufChecklist : standardChecklist,
+                tag_pi_01: document.getElementById('tag_pi_01').value,
+                tag_pi_02: document.getElementById('tag_pi_02').value,
+                tag_pi_03: document.getElementById('tag_pi_03').value,
+                tag_pi_04: document.getElementById('tag_pi_04').value,
+                tag_pi_05: document.getElementById('tag_pi_05').value,
+                tag_pi_06: document.getElementById('tag_pi_06').value,
+                tag_fi_01: "FI-01", tag_fi_02: "FI-02"
+            };
+
+            // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI BAWAH INI
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycb.../exec'; 
+            
+            try {
+                const response = await fetch(scriptUrl, { method: 'POST', body: JSON.stringify(payload) });
+                const data = await response.json();
+                
+                if(data.status === 'success') {
+                    resDiv.classList.add('text-green-600');
+                    resDiv.innerHTML = `✅ Berhasil! <a href="${data.documentUrl}" target="_blank" class="underline text-blue-700">Klik di sini untuk membuka dokumen</a>`;
+                } else {
+                    resDiv.classList.add('text-red-600');
+                    resDiv.innerText = "Error: " + data.message;
+                }
+            } catch (err) {
+                resDiv.classList.add('text-red-600');
+                resDiv.innerText = "Gagal menghubungi server.";
+            }
+        });
+    </script>
+</body>
+</html>
