@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans p-6">
-    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-6 text-blue-600 border-b pb-2">Generator Commissioning Report</h2>
         
         <form id="commForm" class="space-y-4">
@@ -27,17 +27,23 @@
                 <input type="text" id="location" class="w-full border p-2 rounded" required>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-blue-50 p-4 rounded border border-blue-200">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 bg-blue-50 p-4 rounded border border-blue-200">
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_ro" checked onchange="adjustTags()">
-                        <span>Sistem Reverse Osmosis (RO)</span>
+                        <span>Sistem RO</span>
+                    </label>
+                </div>
+                <div>
+                    <label class="flex items-center space-x-2 font-semibold cursor-pointer text-blue-700">
+                        <input type="checkbox" id="has_recycle" onchange="adjustTags()">
+                        <span>Flow Recycle (RO 25/30)</span>
                     </label>
                 </div>
                 <div>
                     <label class="flex items-center space-x-2 font-semibold cursor-pointer">
                         <input type="checkbox" id="has_uf" onchange="adjustTags()">
-                        <span>Sistem Ultra Filtrasi (UF)</span>
+                        <span>Sistem UF</span>
                     </label>
                 </div>
                 <div>
@@ -51,13 +57,16 @@
             <!-- Form Tag P&ID RO -->
             <div id="ro_tags_container" class="bg-gray-50 p-4 rounded mt-2">
                 <h3 class="font-bold mb-2">Tag P&ID Reverse Osmosis (Auto-Adjust)</h3>
-                <div class="grid grid-cols-3 gap-2 text-sm">
-                    <input type="text" id="tag_pi_01" class="border p-1" value="PI-01">
-                    <input type="text" id="tag_pi_02" class="border p-1" value="PI-02">
-                    <input type="text" id="tag_pi_03" class="border p-1" value="PI-03">
-                    <input type="text" id="tag_pi_04" class="border p-1" value="PI-04">
-                    <input type="text" id="tag_pi_05" class="border p-1" value="PI-05">
-                    <input type="text" id="tag_pi_06" class="border p-1" value="PI-06">
+                <div class="grid grid-cols-4 gap-2 text-sm">
+                    <div><label class="text-xs text-gray-500">PI-01</label><input type="text" id="tag_pi_01" class="w-full border p-1" value="PI-01"></div>
+                    <div><label class="text-xs text-gray-500">PI-02</label><input type="text" id="tag_pi_02" class="w-full border p-1" value="PI-02"></div>
+                    <div><label class="text-xs text-gray-500">PI-03</label><input type="text" id="tag_pi_03" class="w-full border p-1" value="PI-03"></div>
+                    <div><label class="text-xs text-gray-500">PI-04</label><input type="text" id="tag_pi_04" class="w-full border p-1" value="PI-04"></div>
+                    <div><label class="text-xs text-gray-500">PI-05</label><input type="text" id="tag_pi_05" class="w-full border p-1" value="PI-05"></div>
+                    <div><label class="text-xs text-gray-500">PI-06</label><input type="text" id="tag_pi_06" class="w-full border p-1" value="PI-06"></div>
+                    <div><label class="text-xs text-gray-500">FI Product</label><input type="text" id="tag_fi_01" class="w-full border p-1" value="FI-01"></div>
+                    <div><label class="text-xs text-gray-500">FI Reject</label><input type="text" id="tag_fi_02" class="w-full border p-1" value="FI-02"></div>
+                    <div id="recycle_tag_wrapper" class="hidden"><label class="text-xs text-blue-600 font-bold">FI Recycle</label><input type="text" id="tag_fi_03" class="w-full border p-1 bg-blue-50" value="FI-03"></div>
                 </div>
             </div>
 
@@ -113,11 +122,13 @@
             const hasRO = document.getElementById('has_ro').checked;
             const hasUF = document.getElementById('has_uf').checked;
             const hasSoftener = document.getElementById('has_softener').checked;
+            const hasRecycle = document.getElementById('has_recycle').checked;
             
             // Sembunyikan/Tampilkan Form Tag
             document.getElementById('ro_tags_container').classList.toggle('hidden', !hasRO);
             document.getElementById('uf_tags_container').classList.toggle('hidden', !hasUF);
             document.getElementById('softener_tags_container').classList.toggle('hidden', !hasSoftener);
+            document.getElementById('recycle_tag_wrapper').classList.toggle('hidden', !hasRecycle);
 
             // Geser Tag RO (hanya jika ada RO dan UF)
             if (hasRO && hasUF) {
@@ -140,6 +151,7 @@
             const hasRO = document.getElementById('has_ro').checked;
             const hasUF = document.getElementById('has_uf').checked;
             const hasSoftener = document.getElementById('has_softener').checked;
+            const hasRecycle = document.getElementById('has_recycle').checked;
             
             // Penentuan Checklist Pintar
             let activeChecklist = "(   ) Checklist belum didefinisikan.";
@@ -161,9 +173,11 @@
                 owner_company: document.getElementById('company_name').value,
                 owner_name: document.getElementById('owner_name').value,
                 contractor_name: document.getElementById('contractor_name').value,
+                
                 has_ro: hasRO,
                 has_uf: hasUF,
                 has_softener: hasSoftener,
+                has_recycle: hasRecycle,
                 checklist_items: activeChecklist,
                 
                 tag_pi_01: document.getElementById('tag_pi_01').value,
@@ -172,7 +186,9 @@
                 tag_pi_04: document.getElementById('tag_pi_04').value,
                 tag_pi_05: document.getElementById('tag_pi_05').value,
                 tag_pi_06: document.getElementById('tag_pi_06').value,
-                tag_fi_01: "FI-01", tag_fi_02: "FI-02",
+                tag_fi_01: document.getElementById('tag_fi_01').value, 
+                tag_fi_02: document.getElementById('tag_fi_02').value,
+                tag_fi_03: document.getElementById('tag_fi_03').value,
 
                 tag_ps_uf_feed: document.getElementById('tag_ps_uf_feed').value,
                 tag_ps_uf_bw: document.getElementById('tag_ps_uf_bw').value,
