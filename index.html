@@ -5,117 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WTP Commissioning Generator</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
-        .form-section { margin-bottom: 20px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 5px; background: #fafafa; }
-        .form-section h3 { margin-top: 0; color: #34495e; font-size: 16px; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px; }
-        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 15px; }
-        .checkbox-item { display: flex; align-items: center; width: 45%; }
-        .checkbox-item input { margin-right: 10px; transform: scale(1.2); }
-        button { width: 100%; padding: 12px; background: #2980b9; color: white; border: none; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: background 0.3s; }
-        button:hover { background: #1c5980; }
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #16a34a;
+        }
         
-        /* Area Tracking List */
-        .tracking-area { margin-top: 30px; }
-        .tracking-area h3 { border-bottom: 2px solid #27ae60; color: #27ae60; padding-bottom: 5px; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: var(--text-main); line-height: 1.5; }
+        .container { max-width: 900px; margin: auto; }
+        h2 { text-align: center; color: var(--primary); margin-bottom: 30px; font-weight: 700; font-size: 28px; }
+        
+        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.05); padding: 25px; margin-bottom: 25px; border: 1px solid var(--border-color); }
+        .card-header { font-size: 18px; font-weight: 600; color: var(--primary); border-bottom: 2px solid var(--bg-color); padding-bottom: 12px; margin-bottom: 20px; margin-top: 0; }
+        
+        /* Grid Form Layout */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 20px; }
+        @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        .input-group { display: flex; flex-direction: column; }
+        label { font-weight: 600; margin-bottom: 6px; font-size: 14px; color: var(--text-main); }
+        .optional-text { color: var(--text-muted); font-size: 12px; font-weight: 400; }
+        input[type="text"] { padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        
+        /* Checkbox Grid */
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .checkbox-item { display: flex; align-items: center; background: var(--bg-color); padding: 10px 15px; border-radius: 8px; border: 1px solid transparent; transition: all 0.2s; cursor: pointer; }
+        .checkbox-item:hover { border-color: #cbd5e1; }
+        .checkbox-item input { margin-right: 12px; transform: scale(1.2); cursor: pointer; }
+        .ro-sub { margin-left: 20px; grid-column: 1 / -1; display: flex; gap: 15px; flex-wrap: wrap; }
+        
+        /* Dynamic P&ID Sections */
+        .pid-subsection { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .pid-subsection h4 { margin-top: 0; margin-bottom: 15px; color: #475569; font-size: 15px; }
+
+        /* Button & Tracking */
+        button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 10px; }
+        button:hover { background: var(--primary-hover); }
+        button:active { transform: translateY(2px); }
+        
+        #loading { display: none; text-align: center; font-weight: 600; color: #d97706; margin-top: 15px; padding: 10px; background: #fef3c7; border-radius: 6px; }
+        
+        .tracking-area { margin-top: 30px; display: none; }
         .doc-list { list-style: none; padding: 0; margin: 0; }
-        .doc-list li { background: #e8f8f5; border: 1px solid #a3e4d7; margin-bottom: 10px; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
-        .doc-list li a { text-decoration: none; background: #27ae60; color: white; padding: 8px 15px; border-radius: 4px; font-size: 14px; font-weight: bold; }
-        .doc-list li a:hover { background: #1e8449; }
-        #loading { display: none; text-align: center; font-weight: bold; color: #d35400; margin-top: 15px; }
+        .doc-list li { background: #f0fdf4; border: 1px solid #bbf7d0; margin-bottom: 10px; padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .doc-list li a { text-decoration: none; background: var(--success); color: white; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; transition: background 0.2s; }
+        .doc-list li a:hover { background: #15803d; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>WTP Commissioning Report Generator</h2>
+    <h2>WTP Commissioning Generator</h2>
     
     <form id="reportForm">
-        <!-- Project Data -->
-        <div class="form-section">
-            <h3>1. Project Details</h3>
-            <div class="input-group">
-                <label>Project Name (Nama File)</label>
-                <input type="text" id="project_name" required placeholder="Contoh: PLTU Jateng 2x1000MW">
-            </div>
-            <div class="input-group">
-                <label>System Title (Judul di Dokumen)</label>
-                <input type="text" id="system_title" required placeholder="Contoh: WATER TREATMENT PLANT 500 CMD">
-            </div>
-            <div class="input-group">
-                <label>Company / Client Name</label>
-                <input type="text" id="company_name" required>
-            </div>
-            <div class="input-group">
-                <label>PO Number</label>
-                <input type="text" id="po_number">
-            </div>
-            <div class="input-group">
-                <label>Location of Plant (Kota/Kab)</label>
-                <input type="text" id="location">
-            </div>
-            <div class="input-group">
-                <label>Alamat Lengkap</label>
-                <input type="text" id="alamat">
-            </div>
-        </div>
-
-        <!-- System Configuration (Checkboxes) -->
-        <div class="form-section">
-            <h3>2. System Modules & Configuration</h3>
-            <div class="checkbox-group">
-                <div class="checkbox-item"><input type="checkbox" id="has_clarifier"> <label for="has_clarifier">Clarifier System</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_dosing"> <label for="has_dosing">Dosing Pump</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_birm"> <label for="has_birm">Birm Iron Filter</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_mmf"> <label for="has_mmf">Multi Media Filter (MMF)</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_acf"> <label for="has_acf">Activated Carbon Filter (ACF)</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_softener"> <label for="has_softener">Softener</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_uf"> <label for="has_uf">Ultra Filtration (UF)</label></div>
-                <div class="checkbox-item"><input type="checkbox" id="has_mixedbed"> <label for="has_mixedbed">Mixed Bed</label></div>
-                <div class="checkbox-item" style="width:100%; border-top: 1px solid #ccc; padding-top:10px; margin-top:10px;">
-                    <input type="checkbox" id="has_ro"> <label for="has_ro" style="font-weight:bold; color:#d35400;">Reverse Osmosis (RO)</label>
+        <!-- 1. Project Data -->
+        <div class="card">
+            <h3 class="card-header">1. Project Details</h3>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Project Name (Nama File) *</label>
+                    <input type="text" id="project_name" required placeholder="Contoh: PLTU Jateng 2x1000MW">
                 </div>
-                <div class="checkbox-item" style="margin-left: 20px;"><input type="checkbox" id="is_ro_large"> <label for="is_ro_large">Include Backpressure (RO Besar)</label></div>
-                <div class="checkbox-item" style="margin-left: 20px;"><input type="checkbox" id="has_recycle"> <label for="has_recycle">Include Flow Recycle</label></div>
+                <div class="input-group">
+                    <label>System Title (Judul di Dokumen) *</label>
+                    <input type="text" id="system_title" required placeholder="Contoh: WATER TREATMENT PLANT 500 CMD">
+                </div>
+                <div class="input-group">
+                    <label>Company / Client Name *</label>
+                    <input type="text" id="company_name" required>
+                </div>
+                <div class="input-group">
+                    <label>PO Number</label>
+                    <input type="text" id="po_number">
+                </div>
+                <div class="input-group">
+                    <label>Location of Plant (Kota/Kab)</label>
+                    <input type="text" id="location">
+                </div>
+                <div class="input-group">
+                    <label>Alamat Lengkap</label>
+                    <input type="text" id="alamat">
+                </div>
             </div>
         </div>
 
-        <!-- Signatures -->
-        <div class="form-section">
-            <h3>3. Signatories</h3>
-            <div class="input-group">
-                <label>Owner Company Name</label>
-                <input type="text" id="owner_company">
+        <!-- 2. System Configuration -->
+        <div class="card">
+            <h3 class="card-header">2. System Modules Configuration</h3>
+            <div class="checkbox-grid">
+                <label class="checkbox-item"><input type="checkbox" id="has_clarifier"> Clarifier System</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_dosing"> Dosing Pump</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_birm"> Birm Iron Filter</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_mmf"> Multi Media Filter (MMF)</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_acf"> Activated Carbon Filter</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_softener" onchange="togglePID()"> Softener</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_uf" onchange="togglePID()"> Ultra Filtration (UF)</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_mixedbed"> Mixed Bed</label>
+                <label class="checkbox-item" style="border: 1px solid #fed7aa; background: #fff7ed;"><input type="checkbox" id="has_ro" onchange="togglePID()"> <strong style="color: #ea580c;">Reverse Osmosis (RO)</strong></label>
             </div>
-            <div class="input-group">
-                <label>Owner Authorized Personnel</label>
-                <input type="text" id="owner_name">
-            </div>
-            <div class="input-group">
-                <label>Contractor Authorized Personnel</label>
-                <input type="text" id="contractor_name">
+            
+            <div class="ro-sub" id="ro_options" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color);">
+                <label class="checkbox-item"><input type="checkbox" id="is_ro_large" onchange="togglePID()"> Include Backpressure (RO Besar)</label>
+                <label class="checkbox-item"><input type="checkbox" id="has_recycle" onchange="togglePID()"> Include Flow Recycle</label>
             </div>
         </div>
 
-        <button type="button" onclick="generateReport()">Generate Commissioning Report</button>
-        <div id="loading">Memproses dokumen di server Google... Mohon tunggu.</div>
+        <!-- 3. P&ID Tags (Dynamic) -->
+        <div class="card" id="pid_card" style="display: none;">
+            <h3 class="card-header">3. P&ID Tags <span class="optional-text">(Kosongkan jika ingin berupa titik-titik di dokumen)</span></h3>
+            
+            <!-- Softener Tags -->
+            <div class="pid-subsection" id="pid_softener" style="display: none;">
+                <h4>Tag Softener</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PI Inlet Softener</label><input type="text" id="tag_pi_soft_in" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Outlet Softener</label><input type="text" id="tag_pi_soft_out" placeholder="PI-XX"></div>
+                </div>
+            </div>
+
+            <!-- UF Tags -->
+            <div class="pid-subsection" id="pid_uf" style="display: none;">
+                <h4>Tag Ultra Filtration (UF)</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PS UF Feed Pump</label><input type="text" id="tag_ps_uf_feed" placeholder="PS-XX"></div>
+                    <div class="input-group"><label>PS UF Backwash Pump</label><input type="text" id="tag_ps_uf_bw" placeholder="PS-XX"></div>
+                    <div class="input-group"><label>PI Inlet UF</label><input type="text" id="tag_pi_uf_in" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Outlet UF</label><input type="text" id="tag_pi_uf_out" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>FI Product UF</label><input type="text" id="tag_fi_uf" placeholder="FI-XX"></div>
+                </div>
+            </div>
+
+            <!-- RO Tags -->
+            <div class="pid-subsection" id="pid_ro" style="display: none;">
+                <h4>Tag Reverse Osmosis (RO)</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PI Inlet Cartridge Filter (PI-01)</label><input type="text" id="tag_pi_01" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Outlet Cartridge Filter (PI-02)</label><input type="text" id="tag_pi_02" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Outlet Booster Pump (PI-03)</label><input type="text" id="tag_pi_03" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Inlet Stage 2 (PI-04)</label><input type="text" id="tag_pi_04" placeholder="PI-XX"></div>
+                    <div class="input-group"><label>PI Reject (PI-05)</label><input type="text" id="tag_pi_05" placeholder="PI-XX"></div>
+                    
+                    <!-- Dynamic RO Tags -->
+                    <div class="input-group" id="wrap_pi_06" style="display: none;"><label>PI Backpressure Stage 1 (PI-06)</label><input type="text" id="tag_pi_06" placeholder="PI-XX"></div>
+                    
+                    <div class="input-group"><label>FI Product Water (FI-01)</label><input type="text" id="tag_fi_01" placeholder="FI-XX"></div>
+                    <div class="input-group"><label>FI Reject Water (FI-02)</label><input type="text" id="tag_fi_02" placeholder="FI-XX"></div>
+                    
+                    <div class="input-group" id="wrap_fi_03" style="display: none;"><label>FI Recycle (FI-03)</label><input type="text" id="tag_fi_03" placeholder="FI-XX"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Signatures -->
+        <div class="card">
+            <h3 class="card-header">4. Signatories <span class="optional-text">(Kosongkan jika ingin diisi manual di lapangan)</span></h3>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Owner Company Name</label>
+                    <input type="text" id="owner_company" placeholder="Kosongkan jika tidak ada">
+                </div>
+                <div class="input-group">
+                    <label>Owner Authorized Personnel</label>
+                    <input type="text" id="owner_name" placeholder="Kosongkan jika tidak ada">
+                </div>
+                <div class="input-group">
+                    <label>Contractor Authorized Personnel</label>
+                    <input type="text" id="contractor_name" placeholder="Kosongkan jika tidak ada">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" onclick="generateReport()">🚀 Generate Commissioning Report</button>
+        <div id="loading">⏳ Memproses dokumen di server Google... Mohon tunggu.</div>
     </form>
 
     <!-- Tracking List Area -->
-    <div class="tracking-area" id="trackingArea" style="display: none;">
-        <h3>Dokumen Tersimpan (Generated Documents)</h3>
+    <div class="tracking-area" id="trackingArea">
+        <h3 style="color: var(--success); margin-bottom: 15px;">✓ Dokumen Tersimpan</h3>
         <ul class="doc-list" id="docList">
-            <!-- Dokumen yang baru digenerate akan muncul di sini -->
+            <!-- File List -->
         </ul>
     </div>
 </div>
 
 <script>
-    // FUNGSI PERAKIT CHECKLIST DINAMIS
+    // FUNGSI UNTUK MENAMPILKAN/MENYEMBUNYIKAN FORM P&ID SECARA CERDAS
+    function togglePID() {
+        const hasSoft = document.getElementById('has_softener').checked;
+        const hasUf = document.getElementById('has_uf').checked;
+        const hasRo = document.getElementById('has_ro').checked;
+        const isRoLarge = document.getElementById('is_ro_large').checked;
+        const hasRecycle = document.getElementById('has_recycle').checked;
+
+        // Tampilkan/Sembunyikan sub-opsi RO
+        document.getElementById('ro_options').style.display = hasRo ? 'flex' : 'none';
+
+        // Tampilkan/Sembunyikan Card P&ID utama
+        document.getElementById('pid_card').style.display = (hasSoft || hasUf || hasRo) ? 'block' : 'none';
+
+        // Tampilkan/Sembunyikan Sub-section per modul
+        document.getElementById('pid_softener').style.display = hasSoft ? 'block' : 'none';
+        document.getElementById('pid_uf').style.display = hasUf ? 'block' : 'none';
+        document.getElementById('pid_ro').style.display = hasRo ? 'block' : 'none';
+        
+        // Tampilkan/Sembunyikan Tag RO spesifik
+        document.getElementById('wrap_pi_06').style.display = isRoLarge ? 'flex' : 'none';
+        document.getElementById('wrap_fi_03').style.display = hasRecycle ? 'flex' : 'none';
+    }
+
     function buildChecklist() {
         let checklist = [
             "( ) Power supply to electrical panel properly installed.",
@@ -123,51 +226,29 @@
             "( ) Water drain nozzle properly joined to water drain line."
         ];
         
-        if (document.getElementById('has_clarifier').checked) {
-            checklist.push("( ) Inlet Transfer pump properly joined to Outlet Settlement Tank / Raw Water Line.");
-        }
-        if (document.getElementById('has_dosing').checked) {
-            checklist.push("( ) Chemical Dosing line properly joined to main pipe.");
-            checklist.push("( ) Dosing pump properly joined to Chemical Tank.");
-        }
-        if (document.getElementById('has_birm').checked) {
-            checklist.push("( ) Inlet Birm Filter properly joined to feed line.");
-            checklist.push("( ) Outlet Birm Filter properly joined to the next treatment stage.");
-        }
-        if (document.getElementById('has_mmf').checked) {
-            checklist.push("( ) Inlet MMF properly joined to feed line.");
-            checklist.push("( ) Outlet MMF properly joined to the next treatment stage.");
-        }
-        if (document.getElementById('has_acf').checked) {
-            checklist.push("( ) Inlet ACF properly joined to feed line.");
-            checklist.push("( ) Outlet ACF properly joined to the next treatment stage.");
-        }
-        if (document.getElementById('has_softener').checked) {
-            checklist.push("( ) Softener brine line properly joined to Brine Tank.");
-        }
-        if (document.getElementById('has_uf').checked) {
-            checklist.push("( ) Inlet UF Feed Water Pump properly joined to Feed Water Tank.");
-            checklist.push("( ) Outlet UF properly joined to UF Permeate Tank.");
-            checklist.push("( ) Outlet cleaning line UF properly joined to UF Cleaning Tank.");
-            checklist.push("( ) Inlet UF Backwash pump properly joined to UF Product Tank.");
-        }
-        if (document.getElementById('has_ro').checked) {
-            checklist.push("( ) Outlet product line RO properly joined to Product water tank and CIP tank.");
-            checklist.push("( ) Outlet reject line RO properly joined to water drain line.");
-            checklist.push("( ) Outlet Cleaning/Flushing Pump properly joined to Inlet Cartridge filter.");
-        }
-        if (document.getElementById('has_mixedbed').checked) {
-            checklist.push("( ) HCl and NaOH chemicals already prepared necessarily.");
-            checklist.push("( ) Chemical drain nozzle properly joined to chemical drain line.");
-        }
+        if (document.getElementById('has_clarifier').checked) checklist.push("( ) Inlet Transfer pump properly joined to Outlet Settlement Tank / Raw Water Line.");
+        if (document.getElementById('has_dosing').checked) { checklist.push("( ) Chemical Dosing line properly joined to main pipe."); checklist.push("( ) Dosing pump properly joined to Chemical Tank."); }
+        if (document.getElementById('has_birm').checked) { checklist.push("( ) Inlet Birm Filter properly joined to feed line."); checklist.push("( ) Outlet Birm Filter properly joined to the next treatment stage."); }
+        if (document.getElementById('has_mmf').checked) { checklist.push("( ) Inlet MMF properly joined to feed line."); checklist.push("( ) Outlet MMF properly joined to the next treatment stage."); }
+        if (document.getElementById('has_acf').checked) { checklist.push("( ) Inlet ACF properly joined to feed line."); checklist.push("( ) Outlet ACF properly joined to the next treatment stage."); }
+        if (document.getElementById('has_softener').checked) checklist.push("( ) Softener brine line properly joined to Brine Tank.");
+        if (document.getElementById('has_uf').checked) { checklist.push("( ) Inlet UF Feed Water Pump properly joined to Feed Water Tank."); checklist.push("( ) Outlet UF properly joined to UF Permeate Tank."); checklist.push("( ) Outlet cleaning line UF properly joined to UF Cleaning Tank."); checklist.push("( ) Inlet UF Backwash pump properly joined to UF Product Tank."); }
+        if (document.getElementById('has_ro').checked) { checklist.push("( ) Outlet product line RO properly joined to Product water tank and CIP tank."); checklist.push("( ) Outlet reject line RO properly joined to water drain line."); checklist.push("( ) Outlet Cleaning/Flushing Pump properly joined to Inlet Cartridge filter."); }
+        if (document.getElementById('has_mixedbed').checked) { checklist.push("( ) HCl and NaOH chemicals already prepared necessarily."); checklist.push("( ) Chemical drain nozzle properly joined to chemical drain line."); }
         
         return checklist.join("\n");
     }
 
-    // FUNGSI PENGIRIMAN DATA (AJAX)
     function generateReport() {
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec'; 
+        // PERHATIAN: Masukkan Web App URL dari Apps Script di sini
+        const scriptURL = 'MASUKKAN_URL_WEB_APP_APPS_SCRIPT_DISINI_YANG_AKHIRAN_EXEC'; 
         
+        // Wajib isi Project Name, Title, dan Company
+        if(!document.getElementById('project_name').value || !document.getElementById('system_title').value || !document.getElementById('company_name').value) {
+            alert('Mohon isi Project Name, System Title, dan Company Name terlebih dahulu!');
+            return;
+        }
+
         const data = {
             project_name: document.getElementById('project_name').value,
             system_title: document.getElementById('system_title').value,
@@ -191,9 +272,30 @@
             has_recycle: document.getElementById('has_recycle').checked,
             has_mixedbed: document.getElementById('has_mixedbed').checked,
             
+            // Mengambil nilai P&ID (jika kosong kirim string kosong agar fallback ke ........ di Apps Script)
+            tag_pi_soft_in: document.getElementById('tag_pi_soft_in').value,
+            tag_pi_soft_out: document.getElementById('tag_pi_soft_out').value,
+            tag_ps_uf_feed: document.getElementById('tag_ps_uf_feed').value,
+            tag_ps_uf_bw: document.getElementById('tag_ps_uf_bw').value,
+            tag_pi_uf_in: document.getElementById('tag_pi_uf_in').value,
+            tag_pi_uf_out: document.getElementById('tag_pi_uf_out').value,
+            tag_fi_uf: document.getElementById('tag_fi_uf').value,
+            
+            tag_pi_01: document.getElementById('tag_pi_01').value,
+            tag_pi_02: document.getElementById('tag_pi_02').value,
+            tag_pi_03: document.getElementById('tag_pi_03').value,
+            tag_pi_04: document.getElementById('tag_pi_04').value,
+            tag_pi_05: document.getElementById('tag_pi_05').value,
+            tag_pi_06: document.getElementById('tag_pi_06').value,
+            tag_fi_01: document.getElementById('tag_fi_01').value,
+            tag_fi_02: document.getElementById('tag_fi_02').value,
+            tag_fi_03: document.getElementById('tag_fi_03').value,
+            
             checklist_items: buildChecklist()
         };
         
+        const btn = document.querySelector('button');
+        btn.style.display = 'none';
         document.getElementById('loading').style.display = 'block';
         
         fetch(scriptURL, {
@@ -202,27 +304,26 @@
         })
         .then(response => response.json())
         .then(result => {
+            btn.style.display = 'block';
             document.getElementById('loading').style.display = 'none';
+            
             if (result.status === 'success') {
-                // Tampilkan Area Tracking & Tambahkan dokumen baru ke daftar
                 document.getElementById('trackingArea').style.display = 'block';
                 const docList = document.getElementById('docList');
-                
                 const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>📄 <strong>${result.fileName}</strong></span>
-                    <a href="${result.documentUrl}" target="_blank">Buka Dokumen</a>
-                `;
+                li.innerHTML = `<span>📄 <strong>${result.fileName}</strong></span>
+                                <a href="${result.documentUrl}" target="_blank">Buka Dokumen</a>`;
                 docList.appendChild(li);
                 
-                alert('Dokumen berhasil digenerate dan disimpan di Google Drive!');
+                alert('Berhasil! Dokumen "' + result.fileName + '" telah tersimpan di Drive.');
             } else {
                 alert('Gagal membuat dokumen: ' + result.message);
             }
         })
         .catch(error => {
+            btn.style.display = 'block';
             document.getElementById('loading').style.display = 'none';
-            alert('Error: ' + error.message);
+            alert('Error saat mengirim data: ' + error.message);
         });
     }
 </script>
