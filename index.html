@@ -1,35 +1,307 @@
-<script>
-    // URL GOOGLE APPS SCRIPT YANG SUDAH DIPISAH
-    const SCRIPT_URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
-    const SCRIPT_URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
-
-    // NAVIGASI TAB
-    function switchTab(tab) {
-        const btnComm = document.getElementById('tabBtnComm');
-        const btnHO = document.getElementById('tabBtnHO');
-        const tabComm = document.getElementById('tabCommissioning');
-        const tabHO = document.getElementById('tabHandOver');
-
-        if (tab === 'commissioning') {
-            btnComm.className = 'tab-btn active-comm';
-            btnHO.className = 'tab-btn';
-            tabComm.className = 'tab-content active';
-            tabHO.className = 'tab-content';
-        } else {
-            btnHO.className = 'tab-btn active-ho';
-            btnComm.className = 'tab-btn';
-            tabHO.className = 'tab-content active';
-            tabComm.className = 'tab-content';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Bening Khatulistiwa Docs</title>
+    <style>
+        :root {
+            --primary: #0284c7; --primary-hover: #0369a1;
+            --success: #059669; --success-hover: #047857;
+            --bg: #f1f5f9; --card: #ffffff;
+            --border: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b;
         }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); margin: 0; padding: 25px 15px; color: var(--text-main); line-height: 1.5; }
+        .container { max-width: 950px; margin: auto; }
+        
+        .header-logo { text-align: center; margin-bottom: 30px; }
+        .header-logo h1 { font-size: 28px; color: var(--primary); margin: 0; font-weight: 800; letter-spacing: -0.5px; }
+        .header-logo p { color: var(--text-muted); margin: 5px 0 0 0; font-weight: 500; }
+
+        /* Modern Tabs */
+        .tabs { display: flex; gap: 8px; background: #e2e8f0; padding: 6px; border-radius: 12px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; padding: 14px; font-size: 15px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; color: var(--text-muted); background: transparent; transition: 0.3s; }
+        .tab-btn.active-comm { background: var(--card); color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab-btn.active-ho { background: var(--card); color: var(--success); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Cards & Grids */
+        .card { background: var(--card); border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .card-title { font-size: 17px; font-weight: 700; border-bottom: 2px solid var(--bg); padding-bottom: 10px; margin: 0 0 20px 0; }
+        .t-primary { color: var(--primary); } .t-success { color: var(--success); }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 650px) { .grid-2 { grid-template-columns: 1fr; } }
+        
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #475569; }
+        input[type="text"] { padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #f8fafc; transition: 0.2s; }
+        input[type="text"]:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); outline: none; }
+
+        /* Interactive Module Cards */
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        .module-checkbox { display: none; }
+        .module-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.2s; background: #fff; font-weight: 600; font-size: 14px; text-align: center; color: var(--text-muted); }
+        .module-card:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .module-checkbox:checked + .module-card { border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
+        .module-checkbox.ho-check:checked + .module-card { border-color: var(--success); background: #f0fdf4; color: var(--success); }
+
+        /* Dynamic Forms */
+        .dynamic-sec { display: none; background: #f8fafc; border: 1px solid var(--border); border-left: 4px solid var(--primary); padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.2s; }
+        .dynamic-sec.ho-style { border-left-color: var(--success); }
+        .dynamic-sec h4 { margin: 0 0 15px 0; color: #334155; font-size: 15px; }
+
+        /* Buttons & Alerts */
+        .btn { width: 100%; padding: 16px; border: none; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.2s; color: white; margin-top: 10px; }
+        .btn-comm { background: var(--primary); } .btn-comm:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-ho { background: var(--success); } .btn-ho:hover { background: var(--success-hover); transform: translateY(-2px); }
+        
+        .loading { display: none; text-align: center; font-weight: 600; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; }
+        .load-comm { background: #e0f2fe; color: #0369a1; } .load-ho { background: #dcfce7; color: #15803d; }
+        
+        .result-box { margin-top: 25px; display: none; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        .result-box h3 { margin-top:0; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border); }
+        .doc-item a { padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-logo">
+        <h1>PT BENING KHATULISTIWA</h1>
+        <p>Smart Documentation Generator</p>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="tabs">
+        <button class="tab-btn active-comm" id="tabBtnComm" onclick="switchTab('commissioning')">📋 Commissioning Report</button>
+        <button class="tab-btn" id="tabBtnHO" onclick="switchTab('handover')">🤝 Hand Over (HO) Doc</button>
+    </div>
+
+    <!-- ==================== TAB 1: COMMISSIONING ==================== -->
+    <div id="tabComm" class="tab-content active">
+        <div class="card">
+            <h3 class="card-title t-primary">1. Project Administration</h3>
+            <div class="grid-2">
+                <div class="input-group"><label>Project Name (Nama File) *</label><input type="text" id="comm_project_name" required placeholder="Ex: PLTU Jateng 2x1000MW"></div>
+                <div class="input-group"><label>System Title *</label><input type="text" id="comm_system_title" required placeholder="Ex: WTP 500 CMD"></div>
+                <div class="input-group"><label>Company / Client Name *</label><input type="text" id="comm_company_name" required></div>
+                <div class="input-group"><label>PO Number</label><input type="text" id="comm_po_number"></div>
+                <div class="input-group"><label>Location of Plant</label><input type="text" id="comm_location"></div>
+                <div class="input-group"><label>Alamat Lengkap</label><input type="text" id="comm_alamat"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title t-primary">2. Select Plant Modules</h3>
+            <div class="module-grid">
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_clarifier"><div class="module-card">🌪️ Clarifier</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_dosing"><div class="module-card">🧪 Dosing Pump</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_birm"><div class="module-card">🪨 Birm Filter</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_mmf"><div class="module-card">🏖️ MMF</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_acf"><div class="module-card">⚫ ACF</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_softener" onchange="toggleCommPID()"><div class="module-card">🌫️ Softener</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_uf" onchange="toggleCommPID()"><div class="module-card">🔬 Ultra Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_ro" onchange="toggleCommPID()"><div class="module-card" style="border-width:2px;">💧 Reverse Osmosis</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_mixedbed"><div class="module-card">⚗️ Mixed Bed</div></label>
+            </div>
+            
+            <div id="comm_ro_sub" style="display:none; margin-top:15px; gap:10px;">
+                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_is_ro_large" onchange="toggleCommPID()"><div class="module-card" style="padding:10px;">+ Backpressure (RO Besar)</div></label>
+                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_has_recycle" onchange="toggleCommPID()"><div class="module-card" style="padding:10px;">+ Flow Recycle</div></label>
+            </div>
+        </div>
+
+        <div class="card" id="comm_pid_card" style="display:none;">
+            <h3 class="card-title t-primary">3. P&ID Instrument Tags <span style="font-size:12px; font-weight:normal; color:#64748b;">(Kosongkan untuk isi manual)</span></h3>
+            
+            <div class="dynamic-sec" id="comm_pid_softener">
+                <h4>Softener Tags</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PI Inlet</label><input type="text" id="comm_tag_pi_soft_in"></div>
+                    <div class="input-group"><label>PI Outlet</label><input type="text" id="comm_tag_pi_soft_out"></div>
+                </div>
+            </div>
+
+            <div class="dynamic-sec" id="comm_pid_uf">
+                <h4>Ultra Filtration Tags</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PS Feed Pump</label><input type="text" id="comm_tag_ps_uf_feed"></div>
+                    <div class="input-group"><label>PS Backwash</label><input type="text" id="comm_tag_ps_uf_bw"></div>
+                    <div class="input-group"><label>PI Inlet UF</label><input type="text" id="comm_tag_pi_uf_in"></div>
+                    <div class="input-group"><label>PI Outlet UF</label><input type="text" id="comm_tag_pi_uf_out"></div>
+                    <div class="input-group"><label>FI Product</label><input type="text" id="comm_tag_fi_uf"></div>
+                </div>
+            </div>
+
+            <div class="dynamic-sec" id="comm_pid_ro">
+                <h4>Reverse Osmosis Tags</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>PI Inlet Cartridge (PI-01)</label><input type="text" id="comm_tag_pi_01"></div>
+                    <div class="input-group"><label>PI Outlet Cartridge (PI-02)</label><input type="text" id="comm_tag_pi_02"></div>
+                    <div class="input-group"><label>PI Outlet Booster (PI-03)</label><input type="text" id="comm_tag_pi_03"></div>
+                    <div class="input-group"><label>PI Inlet Stage 2 (PI-04)</label><input type="text" id="comm_tag_pi_04"></div>
+                    <div class="input-group"><label>PI Reject (PI-05)</label><input type="text" id="comm_tag_pi_05"></div>
+                    <div class="input-group" id="comm_wrap_pi_06" style="display:none;"><label>PI Backpressure (PI-06)</label><input type="text" id="comm_tag_pi_06"></div>
+                    <div class="input-group"><label>FI Product Water (FI-01)</label><input type="text" id="comm_tag_fi_01"></div>
+                    <div class="input-group"><label>FI Reject Water (FI-02)</label><input type="text" id="comm_tag_fi_02"></div>
+                    <div class="input-group" id="comm_wrap_fi_03" style="display:none;"><label>FI Recycle (FI-03)</label><input type="text" id="comm_tag_fi_03"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title t-primary">4. Signatories</h3>
+            <div class="grid-2">
+                <div class="input-group"><label>Owner Company Name</label><input type="text" id="comm_owner_company"></div>
+                <div class="input-group"><label>Owner Authorized Personnel</label><input type="text" id="comm_owner_name"></div>
+                <div class="input-group"><label>Contractor Authorized Personnel</label><input type="text" id="comm_contractor_name"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-comm" id="btnComm" onclick="submitCommissioning()">Generate Commissioning Report</button>
+        <div id="loadComm" class="loading load-comm">Memproses Laporan di Google Server...</div>
+        
+        <div class="result-box" id="resComm">
+            <h3 class="t-primary">✓ Dokumen Selesai</h3>
+            <div id="listComm"></div>
+        </div>
+    </div>
+
+
+    <!-- ==================== TAB 2: HAND OVER ==================== -->
+    <div id="tabHO" class="tab-content">
+        <div class="card">
+            <h3 class="card-title t-success">1. Project Administration</h3>
+            <div class="grid-2">
+                <div class="input-group"><label>Project Name (Nama File) *</label><input type="text" id="ho_project_name" required></div>
+                <div class="input-group"><label>System Title *</label><input type="text" id="ho_system_title" required></div>
+                <div class="input-group"><label>Buyer Company Name *</label><input type="text" id="ho_buyer_company" required></div>
+                <div class="input-group"><label>Contractor Name</label><input type="text" id="ho_contractor_name" value="PT Bening Khatulistiwa"></div>
+                <div class="input-group"><label>PO Reference No</label><input type="text" id="ho_po_number"></div>
+                <div class="input-group"><label>Location of Plant</label><input type="text" id="ho_location"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title t-success">2. Hand Over Specifications</h3>
+            <div class="module-grid">
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_raw_water" onchange="toggleHOSec()"><div class="module-card">🌊 Raw Water</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_clarifier" onchange="toggleHOSec()"><div class="module-card">🌪️ Clarifier</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_filtration" onchange="toggleHOSec()"><div class="module-card">🪨 Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_softener" onchange="toggleHOSec()"><div class="module-card">🌫️ Softener</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_uf" onchange="toggleHOSec()"><div class="module-card">🔬 Ultra Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_ro" onchange="toggleHOSec()"><div class="module-card">💧 Reverse Osmosis</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_cip" onchange="toggleHOSec()"><div class="module-card">🧪 CIP & Dosing</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_panel" onchange="toggleHOSec()"><div class="module-card">⚡ Control Panel</div></label>
+            </div>
+
+            <!-- Dynamic Specs Forms -->
+            <div id="ho_sec_raw_water" class="dynamic-sec ho-style">
+                <h4>Raw Water System</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Tank Mat & Cap</label><input type="text" id="ho_rw_tank_mat" placeholder="Mat"><input type="text" id="ho_rw_tank_cap" placeholder="Cap (L)" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_rw_tank_qty"></div>
+                    <div class="input-group"><label>Pump Brand & Model</label><input type="text" id="ho_rw_pump_brand" placeholder="Brand"><input type="text" id="ho_rw_pump_model" placeholder="Model" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Cap, kW, Qty</label><input type="text" id="ho_rw_pump_cap" placeholder="m3/h"><input type="text" id="ho_rw_pump_kw" placeholder="kW" style="margin-top:6px;"><input type="text" id="ho_rw_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_clarifier" class="dynamic-sec ho-style">
+                <h4>Clarifier System</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_clarifier_cap"></div>
+                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_clarifier_mat"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_filtration" class="dynamic-sec ho-style">
+                <h4>Filtration System (Birm/MMF/ACF)</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Type & Cap</label><input type="text" id="ho_filter_type" placeholder="Type"><input type="text" id="ho_filter_cap" placeholder="m3/h" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Size & Valve</label><input type="text" id="ho_filter_tank_size" placeholder="FRP Size"><input type="text" id="ho_filter_valve" placeholder="Valve" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Media & Vol</label><input type="text" id="ho_filter_media_type" placeholder="Type"><input type="text" id="ho_filter_media_vol" placeholder="Vol (L)" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Qty (Sets)</label><input type="text" id="ho_filter_qty"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_softener" class="dynamic-sec ho-style">
+                <h4>Softener System</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Cap & FRP Size</label><input type="text" id="ho_soft_cap" placeholder="m3/h"><input type="text" id="ho_soft_tank_size" placeholder="Size" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Controller</label><input type="text" id="ho_soft_controller"></div>
+                    <div class="input-group"><label>Resin Vol (L)</label><input type="text" id="ho_soft_resin_vol"></div>
+                    <div class="input-group"><label>Brine Tank (L)</label><input type="text" id="ho_soft_brine_cap"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_uf" class="dynamic-sec ho-style">
+                <h4>Ultra Filtration</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_uf_cap"></div>
+                    <div class="input-group"><label>Membrane & Qty</label><input type="text" id="ho_uf_mem_brand" placeholder="Brand"><input type="text" id="ho_uf_mem_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>BW Pump Specs</label><input type="text" id="ho_uf_bw_brand" placeholder="Brand"><input type="text" id="ho_uf_bw_cap" placeholder="m3/h" style="margin-top:6px;"><input type="text" id="ho_uf_bw_kw" placeholder="kW" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Blower Specs</label><input type="text" id="ho_uf_blower_brand" placeholder="Brand"><input type="text" id="ho_uf_blower_kw" placeholder="kW" style="margin-top:6px;"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_ro" class="dynamic-sec ho-style">
+                <h4>Reverse Osmosis</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_ro_cap"></div>
+                    <div class="input-group"><label>Booster Specs</label><input type="text" id="ho_ro_pump_brand" placeholder="Brand"><input type="text" id="ho_ro_pump_model" placeholder="Model" style="margin-top:6px;"><input type="text" id="ho_ro_pump_kw" placeholder="kW" style="margin-top:6px;"><input type="text" id="ho_ro_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Membrane Specs</label><input type="text" id="ho_ro_mem_brand" placeholder="Brand"><input type="text" id="ho_ro_mem_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Vessel Specs</label><input type="text" id="ho_ro_vessel_model" placeholder="Model"><input type="text" id="ho_ro_vessel_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_cip" class="dynamic-sec ho-style">
+                <h4>CIP & Dosing</h4>
+                <div class="grid-2">
+                    <div class="input-group"><label>Pump Specs</label><input type="text" id="ho_cip_pump_brand" placeholder="Brand"><input type="text" id="ho_cip_pump_model" placeholder="Model" style="margin-top:6px;"><input type="text" id="ho_cip_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Tank Specs</label><input type="text" id="ho_cip_tank_mat" placeholder="Mat"><input type="text" id="ho_cip_tank_cap" placeholder="Cap (L)" style="margin-top:6px;"><input type="text" id="ho_cip_tank_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                </div>
+            </div>
+
+            <div id="ho_sec_panel" class="dynamic-sec ho-style">
+                <h4>Control Panel</h4>
+                <div class="input-group"><label>Panel Size (mm)</label><input type="text" id="ho_panel_size"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-ho" id="btnHO" onclick="submitHandOver()">Generate Hand Over Document</button>
+        <div id="loadHO" class="loading load-ho">Memproses Dokumen HO di Google Server...</div>
+        
+        <div class="result-box" id="resHO">
+            <h3 class="t-success">✓ Dokumen Selesai</h3>
+            <div id="listHO"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // URL APPS SCRIPT
+    const URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
+    const URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
+
+    function switchTab(tab) {
+        document.getElementById('tabBtnComm').className = tab === 'commissioning' ? 'tab-btn active-comm' : 'tab-btn';
+        document.getElementById('tabBtnHO').className = tab === 'handover' ? 'tab-btn active-ho' : 'tab-btn';
+        document.getElementById('tabComm').className = tab === 'commissioning' ? 'tab-content active' : 'tab-content';
+        document.getElementById('tabHO').className = tab === 'handover' ? 'tab-content active' : 'tab-content';
     }
 
-    // DINAMISASI FORM COMMISSIONING
+    // LOGIKA COMMISSIONING
     function toggleCommPID() {
         const hasSoft = document.getElementById('comm_has_softener').checked;
         const hasUf = document.getElementById('comm_has_uf').checked;
         const hasRo = document.getElementById('comm_has_ro').checked;
         const isRoLarge = document.getElementById('comm_is_ro_large').checked;
-        const hasRecycle = document.getElementById('comm_has_recycle').checked;
+        const hasRec = document.getElementById('comm_has_recycle').checked;
 
         document.getElementById('comm_ro_sub').style.display = hasRo ? 'flex' : 'none';
         document.getElementById('comm_pid_card').style.display = (hasSoft || hasUf || hasRo) ? 'block' : 'none';
@@ -37,10 +309,10 @@
         document.getElementById('comm_pid_uf').style.display = hasUf ? 'block' : 'none';
         document.getElementById('comm_pid_ro').style.display = hasRo ? 'block' : 'none';
         document.getElementById('comm_wrap_pi_06').style.display = isRoLarge ? 'flex' : 'none';
-        document.getElementById('comm_wrap_fi_03').style.display = hasRecycle ? 'flex' : 'none';
+        document.getElementById('comm_wrap_fi_03').style.display = hasRec ? 'flex' : 'none';
     }
 
-    function buildCommChecklist() {
+    function getCommChecklist() {
         let list = [
             "( ) Power supply to electrical panel properly installed.",
             "( ) Power supply properly joined to electrical Control panel.",
@@ -59,129 +331,71 @@
     }
 
     function submitCommissioning() {
-        if (!document.getElementById('comm_project_name').value || !document.getElementById('comm_system_title').value || !document.getElementById('comm_company_name').value) {
-            alert('Mohon isi Project Name, System Title, dan Company Name terlebih dahulu!');
-            return;
+        if (!document.getElementById('comm_project_name').value || !document.getElementById('comm_company_name').value) {
+            alert('Project Name dan Company Name wajib diisi!'); return;
         }
 
-        const payload = {
-            project_name: document.getElementById('comm_project_name').value,
-            system_title: document.getElementById('comm_system_title').value,
-            company_name: document.getElementById('comm_company_name').value,
-            po_number: document.getElementById('comm_po_number').value,
-            location: document.getElementById('comm_location').value,
-            alamat: document.getElementById('comm_alamat').value,
-            owner_company: document.getElementById('comm_owner_company').value,
-            owner_name: document.getElementById('comm_owner_name').value,
-            contractor_name: document.getElementById('comm_contractor_name').value,
+        const data = { checklist_items: getCommChecklist() };
+        document.querySelectorAll('#tabComm input').forEach(input => {
+            const key = input.id.replace('comm_', '');
+            data[key] = input.type === 'checkbox' ? input.checked : input.value;
+        });
 
-            has_clarifier: document.getElementById('comm_has_clarifier').checked,
-            has_dosing: document.getElementById('comm_has_dosing').checked,
-            has_birm: document.getElementById('comm_has_birm').checked,
-            has_mmf: document.getElementById('comm_has_mmf').checked,
-            has_acf: document.getElementById('comm_has_acf').checked,
-            has_softener: document.getElementById('comm_has_softener').checked,
-            has_uf: document.getElementById('comm_has_uf').checked,
-            has_ro: document.getElementById('comm_has_ro').checked,
-            is_ro_large: document.getElementById('comm_is_ro_large').checked,
-            has_recycle: document.getElementById('comm_has_recycle').checked,
-            has_mixedbed: document.getElementById('comm_has_mixedbed').checked,
+        document.getElementById('btnComm').style.display = 'none';
+        document.getElementById('loadComm').style.display = 'block';
 
-            tag_pi_soft_in: document.getElementById('comm_tag_pi_soft_in').value,
-            tag_pi_soft_out: document.getElementById('comm_tag_pi_soft_out').value,
-            tag_ps_uf_feed: document.getElementById('comm_tag_ps_uf_feed').value,
-            tag_ps_uf_bw: document.getElementById('comm_tag_ps_uf_bw').value,
-            tag_pi_uf_in: document.getElementById('comm_tag_pi_uf_in').value,
-            tag_pi_uf_out: document.getElementById('comm_tag_pi_uf_out').value,
-            tag_fi_uf: document.getElementById('comm_tag_fi_uf').value,
-            tag_pi_01: document.getElementById('comm_tag_pi_01').value,
-            tag_pi_02: document.getElementById('comm_tag_pi_02').value,
-            tag_pi_03: document.getElementById('comm_tag_pi_03').value,
-            tag_pi_04: document.getElementById('comm_tag_pi_04').value,
-            tag_pi_05: document.getElementById('comm_tag_pi_05').value,
-            tag_pi_06: document.getElementById('comm_tag_pi_06').value,
-            tag_fi_01: document.getElementById('comm_tag_fi_01').value,
-            tag_fi_02: document.getElementById('comm_tag_fi_02').value,
-            tag_fi_03: document.getElementById('comm_tag_fi_03').value,
-
-            checklist_items: buildCommChecklist()
-        };
-
-        const btn = document.getElementById('btnComm');
-        btn.style.display = 'none';
-        document.getElementById('loadingComm').style.display = 'block';
-
-        // MENGGUNAKAN URL COMMISSIONING
-        fetch(SCRIPT_URL_COMM, { method: 'POST', body: JSON.stringify(payload) })
-        .then(r => r.json())
-        .then(res => {
-            btn.style.display = 'block';
-            document.getElementById('loadingComm').style.display = 'none';
+        fetch(URL_COMM, { method: 'POST', body: JSON.stringify(data) })
+        .then(r => r.json()).then(res => {
+            document.getElementById('btnComm').style.display = 'block';
+            document.getElementById('loadComm').style.display = 'none';
             if (res.status === 'success') {
-                document.getElementById('trackComm').style.display = 'block';
-                const li = document.createElement('li');
-                li.innerHTML = `<span>📋 <strong>${res.fileName}</strong></span><a href="${res.documentUrl}" target="_blank" class="doc-link-comm">Buka Dokumen</a>`;
-                document.getElementById('listComm').appendChild(li);
-                alert('Dokumen Commissioning Report berhasil disimpan di Drive!');
-            } else { alert('Gagal: ' + res.message); }
-        })
-        .catch(err => {
-            btn.style.display = 'block';
-            document.getElementById('loadingComm').style.display = 'none';
-            alert('Terjadi kesalahan jaringan: ' + err.message);
+                document.getElementById('resComm').style.display = 'block';
+                document.getElementById('listComm').innerHTML += `<div class="doc-item"><span>📄 ${res.fileName}</span><a href="${res.documentUrl}" target="_blank" style="background:var(--primary);">Buka</a></div>`;
+            } else alert('Error: ' + res.message);
+        }).catch(err => {
+            document.getElementById('btnComm').style.display = 'block';
+            document.getElementById('loadComm').style.display = 'none';
+            alert('Jaringan Error!');
         });
     }
 
-    // DINAMISASI FORM HAND OVER
+    // LOGIKA HAND OVER
     function toggleHOSec() {
-        document.getElementById('ho_sec_raw_water').style.display = document.getElementById('ho_has_raw_water').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_clarifier').style.display = document.getElementById('ho_has_clarifier').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_filtration').style.display = document.getElementById('ho_has_filtration').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_softener').style.display = document.getElementById('ho_has_softener').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_uf').style.display = document.getElementById('ho_has_uf').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_ro').style.display = document.getElementById('ho_has_ro').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_cip').style.display = document.getElementById('ho_has_cip').checked ? 'block' : 'none';
-        document.getElementById('ho_sec_panel').style.display = document.getElementById('ho_has_panel').checked ? 'block' : 'none';
+        const sections = ['raw_water', 'clarifier', 'filtration', 'softener', 'uf', 'ro', 'cip', 'panel'];
+        sections.forEach(sec => {
+            document.getElementById(`ho_sec_${sec}`).style.display = document.getElementById(`ho_has_${sec}`).checked ? 'block' : 'none';
+        });
     }
 
     function submitHandOver() {
         if (!document.getElementById('ho_project_name').value || !document.getElementById('ho_buyer_company').value) {
-            alert('Project Name dan Buyer Company wajib diisi!');
-            return;
+            alert('Project Name dan Buyer Company wajib diisi!'); return;
         }
 
-        const payload = {};
-        document.querySelectorAll('#formHO input').forEach(input => {
-            const cleanKey = input.id.replace('ho_', '');
-            if (input.type === 'checkbox') {
-                payload[cleanKey] = input.checked;
-            } else {
-                payload[cleanKey] = input.value;
-            }
+        const data = {};
+        document.querySelectorAll('#tabHO input').forEach(input => {
+            const key = input.id.replace('ho_', '');
+            data[key] = input.type === 'checkbox' ? input.checked : input.value;
         });
 
-        const btn = document.getElementById('btnHO');
-        btn.style.display = 'none';
-        document.getElementById('loadingHO').style.display = 'block';
+        document.getElementById('btnHO').style.display = 'none';
+        document.getElementById('loadHO').style.display = 'block';
 
-        // MENGGUNAKAN URL HAND OVER
-        fetch(SCRIPT_URL_HO, { method: 'POST', body: JSON.stringify(payload) })
-        .then(r => r.json())
-        .then(res => {
-            btn.style.display = 'block';
-            document.getElementById('loadingHO').style.display = 'none';
+        fetch(URL_HO, { method: 'POST', body: JSON.stringify(data) })
+        .then(r => r.json()).then(res => {
+            document.getElementById('btnHO').style.display = 'block';
+            document.getElementById('loadHO').style.display = 'none';
             if (res.status === 'success') {
-                document.getElementById('trackHO').style.display = 'block';
-                const li = document.createElement('li');
-                li.innerHTML = `<span>🤝 <strong>${res.fileName}</strong></span><a href="${res.documentUrl}" target="_blank" class="doc-link-ho">Buka Dokumen</a>`;
-                document.getElementById('listHO').appendChild(li);
-                alert('Dokumen Hand Over berhasil disimpan di Drive!');
-            } else { alert('Gagal: ' + res.message); }
-        })
-        .catch(err => {
-            btn.style.display = 'block';
-            document.getElementById('loadingHO').style.display = 'none';
-            alert('Terjadi kesalahan jaringan: ' + err.message);
+                document.getElementById('resHO').style.display = 'block';
+                document.getElementById('listHO').innerHTML += `<div class="doc-item"><span>🤝 ${res.fileName}</span><a href="${res.documentUrl}" target="_blank" style="background:var(--success);">Buka</a></div>`;
+            } else alert('Error: ' + res.message);
+        }).catch(err => {
+            document.getElementById('btnHO').style.display = 'block';
+            document.getElementById('loadHO').style.display = 'none';
+            alert('Jaringan Error!');
         });
     }
 </script>
+
+</body>
+</html>
