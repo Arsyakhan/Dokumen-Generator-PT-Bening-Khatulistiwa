@@ -17,9 +17,8 @@
             --shadow-float: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         }
 
-        body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background-color: var(--bg-body); margin: 0; padding-bottom: 120px; color: var(--text-main); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background-color: var(--bg-body); margin: 0; padding-bottom: 160px; color: var(--text-main); line-height: 1.5; -webkit-font-smoothing: antialiased; }
         
-        /* Navbar */
         .top-navbar { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 20px 0; border-bottom: 1px solid rgba(226, 232, 240, 0.6); position: sticky; top: 0; z-index: 50; }
         .header-logo { max-width: 1000px; margin: auto; padding: 0 24px; }
         .header-logo h1 { font-size: 22px; color: var(--text-main); margin: 0; font-weight: 800; letter-spacing: -0.5px; }
@@ -28,7 +27,6 @@
 
         .container { max-width: 1000px; margin: auto; padding: 24px; }
 
-        /* Segmented Tabs (Mac Style) */
         .tabs { display: inline-flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 14px; margin-bottom: 30px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box; }
         .tab-btn { flex: 1; padding: 14px 20px; font-size: 14px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; color: #475569; background: transparent; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-btn:hover { color: var(--text-main); }
@@ -39,7 +37,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards Premium */
         .card { background: var(--bg-card); border-radius: 20px; padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow-md); border: 1px solid rgba(255,255,255,0.5); transition: all 0.3s; }
         .card-title { font-size: 16px; font-weight: 800; margin: 0 0 24px 0; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--bg-body); padding-bottom: 16px; }
         .t-primary { color: var(--primary); } .t-success { color: var(--success); }
@@ -48,7 +45,6 @@
         .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; gap: 16px; } }
         
-        /* Modern Inputs */
         .input-group { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #334155; }
         input[type="text"], textarea, select { width: 100%; box-sizing: border-box; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-family: inherit; background: #f8fafc; color: var(--text-main); transition: all 0.2s ease; }
@@ -57,7 +53,6 @@
         input::placeholder, textarea::placeholder { color: var(--text-light); font-weight: 500; }
         .flex-row { display: flex; gap: 10px; width: 100%; }
 
-        /* Interactive Module Grid */
         .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
         .module-checkbox { display: none; }
         .module-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; border: 2px solid var(--border); border-radius: 14px; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); background: #fff; font-weight: 700; font-size: 13px; text-align: center; color: var(--text-muted); user-select: none; }
@@ -66,35 +61,15 @@
         .module-checkbox:checked + .module-card { border-color: var(--primary); background: var(--primary-light); color: var(--primary); box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15); }
         .module-checkbox.ho-check:checked + .module-card { border-color: var(--success); background: var(--success-light); color: var(--success); box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15); }
 
-        /* Dynamic Sections */
         .dynamic-sec { display: none; background: #fff; border: 1px solid var(--border); border-left: 5px solid var(--primary); padding: 28px; border-radius: 16px; margin-top: 24px; box-shadow: var(--shadow-sm); animation: fadeUp 0.3s ease forwards; }
         .dynamic-sec.ho-style { border-left-color: var(--success); }
         .dynamic-sec h4 { margin: 0 0 24px 0; color: var(--text-main); font-size: 15px; font-weight: 800; display: inline-block; padding: 6px 14px; background: var(--bg-body); border-radius: 8px; }
 
         /* FLOATING ACTION BAR */
-        .action-bar { 
-            position: fixed; 
-            bottom: 24px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: calc(100% - 48px); 
-            max-width: 900px; 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            border-radius: 24px; 
-            padding: 16px 24px; 
-            z-index: 9999; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            box-shadow: var(--shadow-float); 
-        }
+        .action-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: calc(100% - 48px); max-width: 900px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 24px; padding: 16px 24px; z-index: 9999; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-float); }
         .action-bar-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
         @media (max-width: 600px) { .action-bar { bottom: 16px; padding: 12px 16px; border-radius: 20px; } .action-bar-inner { flex-direction: column; } }
 
-        /* Buttons */
         .btn { padding: 16px 32px; border: none; font-size: 15px; font-weight: 800; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; width: 100%; max-width: 320px; margin-left: auto; letter-spacing: 0.3px; }
         .btn-comm { background: var(--primary); box-shadow: 0 8px 16px rgba(2, 132, 199, 0.25); } 
         .btn-comm:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(2, 132, 199, 0.35); }
@@ -105,7 +80,6 @@
         .load-comm { background: var(--primary-light); color: var(--primary-hover); } 
         .load-ho { background: var(--success-light); color: var(--success-hover); }
         
-        /* Result Box Inside Action Bar */
         .result-box { flex: 1; display: none; align-items: center; justify-content: space-between; background: var(--bg-body); border-radius: 14px; padding: 12px 16px; border: 1px solid var(--border); }
         .result-box h3 { margin: 0; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .doc-item a { background: var(--text-main); color: #fff; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; transition: 0.2s; }
@@ -371,49 +345,73 @@
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_soft_additional_items" placeholder="ex:&#10;- 1 unit of Solenoid valve nylon 1”&#10;- 1 bag of Salt"></textarea></div>
             </div>
 
+            <!-- REVERSE OSMOSIS PACKAGE 3-in-1 -->
             <div id="ho_sec_ro" class="dynamic-sec ho-style">
-                <h4>Reverse Osmosis Unit</h4>
-                <div class="input-group" style="margin-bottom:12px;"><label>RO Feed Water Pump (Full String)</label><input type="text" id="ho_ro_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
-                <div class="input-group" style="margin-bottom:12px;"><label>RO Booster Pump (Full String)</label><input type="text" id="ho_ro_booster_pump_specs" placeholder="ex: Grundfos CR 3-29, Cap. 2.7 m3/hr @157m, 2.2kW 50 Hz 380v"></div>
-                <div class="input-group" style="margin-bottom:24px;"><label>RO CIP Pump (Full String)</label><input type="text" id="ho_ro_cip_pump_specs" placeholder="ex: Grundfos CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                <h4>Reverse Osmosis Package (RO + Anti Scalant + CIP)</h4>
+                
+                <!-- A. Main RO Unit -->
+                <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #bae6fd;">
+                    <h5 style="margin: 0 0 16px 0; color: #0369a1; font-size: 14px;">A. Main Reverse Osmosis Unit</h5>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>RO Feed Water Pump Specs</label><input type="text" id="ho_ro_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                    <div class="grid-2">
+                        <div class="input-group"><label>RO Unit Model</label><input type="text" id="ho_ro_model" placeholder="ex: BT40-40K-0840"></div>
+                        <div class="input-group">
+                            <label>Capacity & Unit</label>
+                            <div class="flex-row"><input type="text" id="ho_ro_cap" placeholder="ex: 40" style="flex:2;"><select id="ho_ro_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" style="margin-top: 12px;"><label>Booster Pump Specs</label><input type="text" id="ho_ro_booster_specs" placeholder="ex: GRUNDFOS, Model CR 64-5-1, 30 kW, Qty: 1 unit"></div>
+                    
+                    <div class="grid-2" style="margin-top: 12px;">
+                        <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_ro_mem_brand" placeholder="ex: FILMTEC"></div>
+                        <div class="input-group"><label>Membrane Model & Qty</label><div class="flex-row"><input type="text" id="ho_ro_mem_model" placeholder="ex: BW30-400IG" style="flex:2;"><input type="text" id="ho_ro_mem_qty" placeholder="Qty" style="flex:1;"></div></div>
+                        
+                        <div class="input-group"><label>Pressure Vessel Brand</label><input type="text" id="ho_ro_vessel_brand" placeholder="ex: PENTAIR, CODELINES"></div>
+                        <div class="input-group"><label>Vessel Model & Qty</label><div class="flex-row"><input type="text" id="ho_ro_vessel_model" placeholder="ex: 80S30-5" style="flex:2;"><input type="text" id="ho_ro_vessel_qty" placeholder="Qty" style="flex:1;"></div></div>
+                    </div>
 
-                <div class="grid-2">
-                    <div class="input-group"><label>RO Unit Model</label><input type="text" id="ho_ro_model" placeholder="ex: MT40-2K-0510"></div>
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_ro_cap" placeholder="ex: 2" style="flex:2;"><select id="ho_ro_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                    </div>
-                    <div class="input-group"><label>Vessel Brand & Model</label><input type="text" id="ho_ro_vessel_model" placeholder="ex: Pentair Codeline 80S30-5"></div>
-                    <div class="input-group"><label>Vessel Qty</label><input type="text" id="ho_ro_vessel_qty" placeholder="ex: 5"></div>
-                    <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_ro_mem_brand" placeholder="ex: Filmtec BW30-400IG"></div>
-                    <div class="input-group"><label>Membrane Qty</label><input type="text" id="ho_ro_mem_qty" placeholder="ex: 10"></div>
-                    <div class="input-group"><label>Cartridge Filter Model</label><input type="text" id="ho_ro_cf_model" placeholder="ex: SW05-BB20 / CFHD-1940"></div>
-                    <div class="input-group"><label>Cartridge Filter Qty</label><input type="text" id="ho_ro_cf_qty" placeholder="ex: 1"></div>
-                    <div class="input-group"><label>Conductivity Controller Model</label><input type="text" id="ho_ro_cond_model" placeholder="ex: BL983313- c/w sensor HI7634-00"></div>
-                    <div class="input-group">
-                        <label>CIP Tank Cap & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_ro_cip_tank_cap" placeholder="ex: 250" style="flex:2;"><select id="ho_ro_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
-                    </div>
-                    <div class="input-group"><label>CIP Tank Material</label><input type="text" id="ho_ro_cip_tank_mat" placeholder="ex: PP"></div>
-                    <div class="input-group"><label>Pressure Switch Qty</label><input type="text" id="ho_ro_ps_qty" placeholder="ex: 2"></div>
-                    <div class="input-group"><label>Flowmeter Qty</label><input type="text" id="ho_ro_fm_qty" placeholder="ex: 2"></div>
-                    <div class="input-group"><label>Pressure Gauge Qty</label><input type="text" id="ho_ro_pg_qty" placeholder="ex: 4"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Housing Specs</label><input type="text" id="ho_ro_cfh_specs" placeholder="ex: Stainless Steel Material, Model CFHD 27x40”, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Specs</label><input type="text" id="ho_ro_cf_specs" placeholder="ex: 40” length filter cartridge, Qty: 27 units"></div>
+                    
+                    <div class="input-group" style="margin-top: 12px;"><label>Flow Meters Specs (Gunakan Enter untuk baris baru)</label><textarea id="ho_ro_fm_specs" placeholder="ex:&#10;Blue white Digital flow meter, model RTP... Qty: 1 unit&#10;GF flow meter Inline, model 198... Qty: 1 unit"></textarea></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Conductivity Meter Specs</label><input type="text" id="ho_ro_cond_specs" placeholder="ex: 1 Set of Analog Myron 0 - 200 µS/cm, c/w sensor"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Additional RO Instruments</label><textarea id="ho_ro_additional_items" placeholder="ex:&#10;- Pressure Switch Saginomiya&#10;- Pressure Gauge Panel Mount"></textarea></div>
                 </div>
-                <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_ro_additional_items" placeholder="ex:&#10;- 1 pc of Solenoid valve SLP20&#10;- 1 Lot Interconnecting Piping"></textarea></div>
+
+                <!-- B. Anti Scalant System -->
+                <div style="background: #fdf4ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f5d0fe;">
+                    <h5 style="margin: 0 0 16px 0; color: #86198f; font-size: 14px;">B. Anti Scalant System</h5>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical Tank Specs</label><input type="text" id="ho_as_tank_specs" placeholder="ex: PE Material, Cap. 300 Liter, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Dosing Pump Specs</label><input type="text" id="ho_as_pump_specs" placeholder="ex: SEKO, AKL800, Capacity 10 LPH, Qty: 1 unit"></div>
+                    <div class="input-group"><label>Additional Items</label><textarea id="ho_as_additional_items" rows="2" placeholder="ex:&#10;- Static mixer..."></textarea></div>
+                </div>
+
+                <!-- C. CIP System dalam RO -->
+                <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #bbf7d0;">
+                    <h5 style="margin: 0 0 16px 0; color: #166534; font-size: 14px;">C. Chemical Cleaning System (CIP)</h5>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Cleaning Pump Specs</label><input type="text" id="ho_ro_cip_pump_specs" placeholder="ex: GRUNDFOS, Model CR 45-1-1, 3 Kw, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical/Flushing Tank Specs</label><input type="text" id="ho_ro_cip_tank_specs" placeholder="ex: PE Material, Cap: 2000 liters, Qty: 1 unit"></div>
+                    <div class="input-group"><label>Additional Items</label><textarea id="ho_ro_cip_additional_items" rows="2" placeholder="ex:&#10;- CIP Bag Filter..."></textarea></div>
+                </div>
             </div>
 
+            <!-- STANDALONE CIP -->
             <div id="ho_sec_cip" class="dynamic-sec ho-style">
-                <h4>Chemical Dosing System</h4>
-                <div class="input-group" style="margin-bottom:16px;"><label>Dosing Pump Specs (Full String)</label><input type="text" id="ho_cip_pump_specs" placeholder="ex: SEKO, Capacity 18 LPH"></div>
+                <h4>Chemical Dosing System (Standalone)</h4>
+                <div class="input-group" style="margin-bottom:16px;"><label>Dosing Pump Specs (Full String)</label><input type="text" id="ho_std_cip_pump_specs" placeholder="ex: SEKO, Capacity 18 LPH"></div>
                 <div class="grid-2">
                     <div class="input-group">
                         <label>Tank Cap & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_cip_tank_cap" placeholder="ex: 300" style="flex:2;"><select id="ho_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
+                        <div class="flex-row">
+                            <input type="text" id="ho_std_cip_tank_cap" placeholder="ex: 300" style="flex:2;">
+                            <select id="ho_std_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
                     </div>
-                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_cip_tank_mat" placeholder="ex: Polyethylene"></div>
-                    <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_cip_tank_qty" placeholder="ex: 1"></div>
+                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_std_cip_tank_mat" placeholder="ex: Polyethylene"></div>
+                    <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_std_cip_tank_qty" placeholder="ex: 1"></div>
                 </div>
-                <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_cip_additional_items" placeholder="ex:&#10;- Selang dosing & injector valve"></textarea></div>
+                <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_std_cip_additional_items" placeholder="ex:&#10;- Selang dosing & injector valve"></textarea></div>
             </div>
 
             <div id="ho_sec_panel" class="dynamic-sec ho-style">
@@ -425,7 +423,7 @@
     </div>
 </div>
 
-<!-- FLOATING ACTION BARS (DIPINDAH KE LUAR TAB AGAR TIDAK TERPOTONG) -->
+<!-- FLOATING ACTION BARS -->
 <div class="action-bar" id="actionComm">
     <div class="action-bar-inner">
         <div style="flex:1;">
