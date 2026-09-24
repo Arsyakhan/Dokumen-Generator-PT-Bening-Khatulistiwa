@@ -19,7 +19,6 @@
         .header-logo h1 { font-size: 28px; color: var(--primary); margin: 0; font-weight: 800; letter-spacing: -0.5px; }
         .header-logo p { color: var(--text-muted); margin: 5px 0 0 0; font-weight: 500; }
 
-        /* Modern Tabs */
         .tabs { display: flex; gap: 8px; background: #e2e8f0; padding: 6px; border-radius: 12px; margin-bottom: 25px; }
         .tab-btn { flex: 1; padding: 14px; font-size: 15px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; color: var(--text-muted); background: transparent; transition: 0.3s; }
         .tab-btn.active-comm { background: var(--card); color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -28,7 +27,6 @@
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards & Grids */
         .card { background: var(--card); border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); }
         .card-title { font-size: 17px; font-weight: 700; border-bottom: 2px solid var(--bg); padding-bottom: 10px; margin: 0 0 20px 0; }
         .t-primary { color: var(--primary); } .t-success { color: var(--success); }
@@ -38,10 +36,12 @@
         
         .input-group { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #475569; }
-        input[type="text"] { padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #f8fafc; transition: 0.2s; }
-        input[type="text"]:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); outline: none; }
+        input[type="text"], textarea, select { padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #f8fafc; transition: 0.2s; font-family: inherit; }
+        input[type="text"]:focus, textarea:focus, select:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); outline: none; }
+        textarea { resize: vertical; min-height: 70px; }
+        
+        .flex-row { display: flex; gap: 8px; }
 
-        /* Interactive Module Cards */
         .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
         .module-checkbox { display: none; }
         .module-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; transition: 0.2s; background: #fff; font-weight: 600; font-size: 14px; text-align: center; color: var(--text-muted); }
@@ -49,12 +49,10 @@
         .module-checkbox:checked + .module-card { border-color: var(--primary); background: #f0f9ff; color: var(--primary); }
         .module-checkbox.ho-check:checked + .module-card { border-color: var(--success); background: #f0fdf4; color: var(--success); }
 
-        /* Dynamic Forms */
         .dynamic-sec { display: none; background: #f8fafc; border: 1px solid var(--border); border-left: 4px solid var(--primary); padding: 20px; border-radius: 8px; margin-top: 15px; animation: fadeIn 0.2s; }
         .dynamic-sec.ho-style { border-left-color: var(--success); }
         .dynamic-sec h4 { margin: 0 0 15px 0; color: #334155; font-size: 15px; }
 
-        /* Buttons & Alerts */
         .btn { width: 100%; padding: 16px; border: none; font-size: 16px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.2s; color: white; margin-top: 10px; }
         .btn-comm { background: var(--primary); } .btn-comm:hover { background: var(--primary-hover); transform: translateY(-2px); }
         .btn-ho { background: var(--success); } .btn-ho:hover { background: var(--success-hover); transform: translateY(-2px); }
@@ -87,8 +85,8 @@
         <div class="card">
             <h3 class="card-title t-primary">1. Project Administration</h3>
             <div class="grid-2">
-                <div class="input-group"><label>Project Name (Nama File) *</label><input type="text" id="comm_project_name" required placeholder="Ex: PLTU Jateng 2x1000MW"></div>
-                <div class="input-group"><label>System Title *</label><input type="text" id="comm_system_title" required placeholder="Ex: WTP 500 CMD"></div>
+                <div class="input-group"><label>Project Name (Nama File) *</label><input type="text" id="comm_project_name" required></div>
+                <div class="input-group"><label>System Title *</label><input type="text" id="comm_system_title" required></div>
                 <div class="input-group"><label>Company / Client Name *</label><input type="text" id="comm_company_name" required></div>
                 <div class="input-group"><label>PO Number</label><input type="text" id="comm_po_number"></div>
                 <div class="input-group"><label>Location of Plant</label><input type="text" id="comm_location"></div>
@@ -117,7 +115,7 @@
         </div>
 
         <div class="card" id="comm_pid_card" style="display:none;">
-            <h3 class="card-title t-primary">3. P&ID Instrument Tags <span style="font-size:12px; font-weight:normal; color:#64748b;">(Terisi otomatis, sesuaikan jika perlu)</span></h3>
+            <h3 class="card-title t-primary">3. P&ID Instrument Tags <span style="font-size:12px; font-weight:normal; color:#64748b;">(Terisi otomatis)</span></h3>
             
             <div class="dynamic-sec" id="comm_pid_softener">
                 <h4>Softener Tags</h4>
@@ -195,6 +193,7 @@
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_filtration" onchange="toggleHOSec()"><div class="module-card">Filtration</div></label>
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_softener" onchange="toggleHOSec()"><div class="module-card">Softener</div></label>
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_uf" onchange="toggleHOSec()"><div class="module-card">Ultra Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_int_tank" onchange="toggleHOSec()"><div class="module-card">Intermediate Tank</div></label>
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_ro" onchange="toggleHOSec()"><div class="module-card" style="font-weight: 700;">Reverse Osmosis</div></label>
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_cip" onchange="toggleHOSec()"><div class="module-card">CIP & Dosing</div></label>
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_panel" onchange="toggleHOSec()"><div class="module-card">Control Panel</div></label>
@@ -203,73 +202,200 @@
             <!-- Dynamic Specs Forms -->
             <div id="ho_sec_raw_water" class="dynamic-sec ho-style">
                 <h4>Raw Water System</h4>
+                <div class="input-group" style="margin-bottom:12px;"><label>Feed Water Pump Specs</label><input type="text" id="ho_rw_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
                 <div class="grid-2">
-                    <div class="input-group"><label>Tank Mat & Cap</label><input type="text" id="ho_rw_tank_mat" placeholder="Mat"><input type="text" id="ho_rw_tank_cap" placeholder="Cap (L)" style="margin-top:6px;"></div>
+                    <div class="input-group">
+                        <label>Tank Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_rw_tank_cap" placeholder="Cap" style="flex:2;">
+                            <select id="ho_rw_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_rw_tank_mat"></div>
                     <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_rw_tank_qty"></div>
-                    <div class="input-group"><label>Pump Brand & Model</label><input type="text" id="ho_rw_pump_brand" placeholder="Brand"><input type="text" id="ho_rw_pump_model" placeholder="Model" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Cap, kW, Qty</label><input type="text" id="ho_rw_pump_cap" placeholder="m3/h"><input type="text" id="ho_rw_pump_kw" placeholder="kW" style="margin-top:6px;"><input type="text" id="ho_rw_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
                 </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_rw_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_clarifier" class="dynamic-sec ho-style">
                 <h4>Clarifier System</h4>
                 <div class="grid-2">
-                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_clarifier_cap"></div>
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_clarifier_cap" style="flex:2;">
+                            <select id="ho_clarifier_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
+                        </div>
+                    </div>
                     <div class="input-group"><label>Tank Material</label><input type="text" id="ho_clarifier_mat"></div>
                 </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_clarifier_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_filtration" class="dynamic-sec ho-style">
-                <h4>Filtration System (Birm/MMF/ACF)</h4>
+                <h4>Filtration System</h4>
                 <div class="grid-2">
-                    <div class="input-group"><label>Type & Cap</label><input type="text" id="ho_filter_type" placeholder="Type"><input type="text" id="ho_filter_cap" placeholder="m3/h" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Size & Valve</label><input type="text" id="ho_filter_tank_size" placeholder="FRP Size"><input type="text" id="ho_filter_valve" placeholder="Valve" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Media & Vol</label><input type="text" id="ho_filter_media_type" placeholder="Type"><input type="text" id="ho_filter_media_vol" placeholder="Vol (L)" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Filter Type (Name)</label><input type="text" id="ho_filter_type" placeholder="ex: Birm / MMF / ACF"></div>
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_filter_cap" style="flex:2;">
+                            <select id="ho_filter_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>FRP Tank Size</label><input type="text" id="ho_filter_tank_size"></div>
+                    <div class="input-group">
+                        <label>Media Volume & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_filter_media_vol" style="flex:2;">
+                            <select id="ho_filter_media_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Media Type (Name)</label><input type="text" id="ho_filter_media_type"></div>
+                    <div class="input-group"><label>Valve Control</label><input type="text" id="ho_filter_valve"></div>
                     <div class="input-group"><label>Qty (Sets)</label><input type="text" id="ho_filter_qty"></div>
                 </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_filter_additional_items"></textarea></div>
+            </div>
+
+            <div id="ho_sec_uf" class="dynamic-sec ho-style">
+                <h4>Ultra Filtration</h4>
+                <div class="input-group" style="margin-bottom:12px;"><label>UF Feed Water Pump Specs</label><input type="text" id="ho_uf_feed_pump_specs"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>UF Backwash Pump Specs</label><input type="text" id="ho_uf_bw_pump_specs"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>Air Blower Specs</label><input type="text" id="ho_uf_blower_specs"></div>
+                
+                <div class="grid-2">
+                    <div class="input-group"><label>UF Model Name</label><input type="text" id="ho_uf_model"></div>
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_uf_cap" style="flex:2;">
+                            <select id="ho_uf_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_uf_mem_brand"></div>
+                    <div class="input-group"><label>Membrane Qty</label><input type="text" id="ho_uf_mem_qty"></div>
+                    
+                    <div class="input-group">
+                        <label>CIP Tank Cap & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_uf_cip_tank_cap" style="flex:2;">
+                            <select id="ho_uf_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>CIP Tank Material</label><input type="text" id="ho_uf_cip_tank_mat"></div>
+                    <div class="input-group"><label>Solenoid Valve Qty</label><input type="text" id="ho_uf_sv_qty"></div>
+                    <div class="input-group"><label>Pressure Switch Qty</label><input type="text" id="ho_uf_ps_qty"></div>
+                    <div class="input-group"><label>Flowmeter Qty</label><input type="text" id="ho_uf_fm_qty"></div>
+                    <div class="input-group"><label>Pressure Gauge Qty</label><input type="text" id="ho_uf_pg_qty"></div>
+                </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_uf_additional_items"></textarea></div>
+            </div>
+
+            <div id="ho_sec_int_tank" class="dynamic-sec ho-style">
+                <h4>Intermediate Tank</h4>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_int_tank_cap" style="flex:2;">
+                            <select id="ho_int_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Material</label><input type="text" id="ho_int_tank_mat"></div>
+                </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_int_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_softener" class="dynamic-sec ho-style">
                 <h4>Softener System</h4>
                 <div class="grid-2">
-                    <div class="input-group"><label>Cap & FRP Size</label><input type="text" id="ho_soft_cap" placeholder="m3/h"><input type="text" id="ho_soft_tank_size" placeholder="Size" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>Softener Model</label><input type="text" id="ho_soft_model"></div>
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_soft_cap" style="flex:2;">
+                            <select id="ho_soft_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>FRP Size</label><input type="text" id="ho_soft_tank_size"></div>
                     <div class="input-group"><label>Controller</label><input type="text" id="ho_soft_controller"></div>
-                    <div class="input-group"><label>Resin Vol (L)</label><input type="text" id="ho_soft_resin_vol"></div>
-                    <div class="input-group"><label>Brine Tank (L)</label><input type="text" id="ho_soft_brine_cap"></div>
+                    <div class="input-group">
+                        <label>Resin Cation Vol & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_soft_resin_vol" style="flex:2;">
+                            <select id="ho_soft_resin_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Brine Tank Cap & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_soft_brine_cap" style="flex:2;">
+                            <select id="ho_soft_brine_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div id="ho_sec_uf" class="dynamic-sec ho-style">
-                <h4>Ultra Filtration</h4>
-                <div class="grid-2">
-                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_uf_cap"></div>
-                    <div class="input-group"><label>Membrane & Qty</label><input type="text" id="ho_uf_mem_brand" placeholder="Brand"><input type="text" id="ho_uf_mem_qty" placeholder="Qty" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>BW Pump Specs</label><input type="text" id="ho_uf_bw_brand" placeholder="Brand"><input type="text" id="ho_uf_bw_cap" placeholder="m3/h" style="margin-top:6px;"><input type="text" id="ho_uf_bw_kw" placeholder="kW" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Blower Specs</label><input type="text" id="ho_uf_blower_brand" placeholder="Brand"><input type="text" id="ho_uf_blower_kw" placeholder="kW" style="margin-top:6px;"></div>
-                </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_soft_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_ro" class="dynamic-sec ho-style">
-                <h4>Reverse Osmosis</h4>
+                <h4>Reverse Osmosis Unit</h4>
+                <div class="input-group" style="margin-bottom:12px;"><label>RO Feed Water Pump Specs</label><input type="text" id="ho_ro_feed_pump_specs"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>RO Booster Pump Specs</label><input type="text" id="ho_ro_booster_pump_specs"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>RO CIP Pump Specs</label><input type="text" id="ho_ro_cip_pump_specs"></div>
+
                 <div class="grid-2">
-                    <div class="input-group"><label>Capacity (m3/hr)</label><input type="text" id="ho_ro_cap"></div>
-                    <div class="input-group"><label>Booster Specs</label><input type="text" id="ho_ro_pump_brand" placeholder="Brand"><input type="text" id="ho_ro_pump_model" placeholder="Model" style="margin-top:6px;"><input type="text" id="ho_ro_pump_kw" placeholder="kW" style="margin-top:6px;"><input type="text" id="ho_ro_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Membrane Specs</label><input type="text" id="ho_ro_mem_brand" placeholder="Brand"><input type="text" id="ho_ro_mem_qty" placeholder="Qty" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Vessel Specs</label><input type="text" id="ho_ro_vessel_model" placeholder="Model"><input type="text" id="ho_ro_vessel_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group"><label>RO Unit Model</label><input type="text" id="ho_ro_model"></div>
+                    <div class="input-group">
+                        <label>Capacity & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_ro_cap" style="flex:2;">
+                            <select id="ho_ro_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Vessel Brand & Model</label><input type="text" id="ho_ro_vessel_model"></div>
+                    <div class="input-group"><label>Vessel Qty</label><input type="text" id="ho_ro_vessel_qty"></div>
+                    <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_ro_mem_brand"></div>
+                    <div class="input-group"><label>Membrane Qty</label><input type="text" id="ho_ro_mem_qty"></div>
+                    <div class="input-group"><label>Cartridge Filter Model</label><input type="text" id="ho_ro_cf_model"></div>
+                    <div class="input-group"><label>Cartridge Filter Qty</label><input type="text" id="ho_ro_cf_qty"></div>
+                    <div class="input-group"><label>Conductivity Controller Model</label><input type="text" id="ho_ro_cond_model"></div>
+                    <div class="input-group">
+                        <label>CIP Tank Cap & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_ro_cip_tank_cap" style="flex:2;">
+                            <select id="ho_ro_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>CIP Tank Material</label><input type="text" id="ho_ro_cip_tank_mat"></div>
+                    <div class="input-group"><label>Pressure Switch Qty</label><input type="text" id="ho_ro_ps_qty"></div>
+                    <div class="input-group"><label>Flowmeter Qty</label><input type="text" id="ho_ro_fm_qty"></div>
+                    <div class="input-group"><label>Pressure Gauge Qty</label><input type="text" id="ho_ro_pg_qty"></div>
                 </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_ro_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_cip" class="dynamic-sec ho-style">
-                <h4>CIP & Dosing</h4>
+                <h4>Chemical Dosing System</h4>
+                <div class="input-group" style="margin-bottom:12px;"><label>Dosing Pump Specs</label><input type="text" id="ho_cip_pump_specs"></div>
                 <div class="grid-2">
-                    <div class="input-group"><label>Pump Specs</label><input type="text" id="ho_cip_pump_brand" placeholder="Brand"><input type="text" id="ho_cip_pump_model" placeholder="Model" style="margin-top:6px;"><input type="text" id="ho_cip_pump_qty" placeholder="Qty" style="margin-top:6px;"></div>
-                    <div class="input-group"><label>Tank Specs</label><input type="text" id="ho_cip_tank_mat" placeholder="Mat"><input type="text" id="ho_cip_tank_cap" placeholder="Cap (L)" style="margin-top:6px;"><input type="text" id="ho_cip_tank_qty" placeholder="Qty" style="margin-top:6px;"></div>
+                    <div class="input-group">
+                        <label>Tank Cap & Unit</label>
+                        <div class="flex-row">
+                            <input type="text" id="ho_cip_tank_cap" style="flex:2;">
+                            <select id="ho_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
+                        </div>
+                    </div>
+                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_cip_tank_mat"></div>
+                    <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_cip_tank_qty"></div>
                 </div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_cip_additional_items"></textarea></div>
             </div>
 
             <div id="ho_sec_panel" class="dynamic-sec ho-style">
                 <h4>Control Panel</h4>
                 <div class="input-group"><label>Panel Size (mm)</label><input type="text" id="ho_panel_size"></div>
+                <div class="input-group" style="margin-top: 15px;"><label>Additional Items</label><textarea id="ho_panel_additional_items"></textarea></div>
             </div>
         </div>
 
@@ -284,7 +410,7 @@
 </div>
 
 <script>
-    // URL APPS SCRIPT
+    // MASUKKAN URL APPS SCRIPT DI SINI (JANGAN LUPA)
     const URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
     const URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
 
@@ -295,14 +421,10 @@
         document.getElementById('tabHO').className = tab === 'handover' ? 'tab-content active' : 'tab-content';
     }
 
-    // LOGIKA P&ID SEQUENTIAL NUMBERING
     function updatePIDNumbering() {
-        let piCount = 1;
-        let fiCount = 1;
-        let psCount = 1;
+        let piCount = 1, fiCount = 1, psCount = 1;
         const pad = (num) => (num < 10 ? '0' : '') + num;
 
-        // Softener
         if (document.getElementById('comm_has_softener').checked) {
             document.getElementById('comm_tag_pi_soft_in').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_pi_soft_out').value = 'PI-' + pad(piCount++);
@@ -311,7 +433,6 @@
             document.getElementById('comm_tag_pi_soft_out').value = '';
         }
 
-        // UF
         if (document.getElementById('comm_has_uf').checked) {
             document.getElementById('comm_tag_ps_uf_feed').value = 'PS-' + pad(psCount++);
             document.getElementById('comm_tag_ps_uf_bw').value = 'PS-' + pad(psCount++);
@@ -319,41 +440,29 @@
             document.getElementById('comm_tag_pi_uf_out').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_fi_uf').value = 'FI-' + pad(fiCount++);
         } else {
-            document.getElementById('comm_tag_ps_uf_feed').value = '';
-            document.getElementById('comm_tag_ps_uf_bw').value = '';
-            document.getElementById('comm_tag_pi_uf_in').value = '';
-            document.getElementById('comm_tag_pi_uf_out').value = '';
+            document.getElementById('comm_tag_ps_uf_feed').value = ''; document.getElementById('comm_tag_ps_uf_bw').value = '';
+            document.getElementById('comm_tag_pi_uf_in').value = ''; document.getElementById('comm_tag_pi_uf_out').value = '';
             document.getElementById('comm_tag_fi_uf').value = '';
         }
 
-        // RO
         if (document.getElementById('comm_has_ro').checked) {
             document.getElementById('comm_tag_pi_01').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_pi_02').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_pi_03').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_pi_04').value = 'PI-' + pad(piCount++);
             document.getElementById('comm_tag_pi_05').value = 'PI-' + pad(piCount++);
-            if (document.getElementById('comm_is_ro_large').checked) {
-                document.getElementById('comm_tag_pi_06').value = 'PI-' + pad(piCount++);
-            } else {
-                document.getElementById('comm_tag_pi_06').value = '';
-            }
+            if (document.getElementById('comm_is_ro_large').checked) document.getElementById('comm_tag_pi_06').value = 'PI-' + pad(piCount++);
+            else document.getElementById('comm_tag_pi_06').value = '';
+            
             document.getElementById('comm_tag_fi_01').value = 'FI-' + pad(fiCount++);
             document.getElementById('comm_tag_fi_02').value = 'FI-' + pad(fiCount++);
-            if (document.getElementById('comm_has_recycle').checked) {
-                document.getElementById('comm_tag_fi_03').value = 'FI-' + pad(fiCount++);
-            } else {
-                document.getElementById('comm_tag_fi_03').value = '';
-            }
+            if (document.getElementById('comm_has_recycle').checked) document.getElementById('comm_tag_fi_03').value = 'FI-' + pad(fiCount++);
+            else document.getElementById('comm_tag_fi_03').value = '';
         } else {
-            document.getElementById('comm_tag_pi_01').value = '';
-            document.getElementById('comm_tag_pi_02').value = '';
-            document.getElementById('comm_tag_pi_03').value = '';
-            document.getElementById('comm_tag_pi_04').value = '';
-            document.getElementById('comm_tag_pi_05').value = '';
-            document.getElementById('comm_tag_pi_06').value = '';
-            document.getElementById('comm_tag_fi_01').value = '';
-            document.getElementById('comm_tag_fi_02').value = '';
+            document.getElementById('comm_tag_pi_01').value = ''; document.getElementById('comm_tag_pi_02').value = '';
+            document.getElementById('comm_tag_pi_03').value = ''; document.getElementById('comm_tag_pi_04').value = '';
+            document.getElementById('comm_tag_pi_05').value = ''; document.getElementById('comm_tag_pi_06').value = '';
+            document.getElementById('comm_tag_fi_01').value = ''; document.getElementById('comm_tag_fi_02').value = '';
             document.getElementById('comm_tag_fi_03').value = '';
         }
     }
@@ -362,17 +471,13 @@
         const hasSoft = document.getElementById('comm_has_softener').checked;
         const hasUf = document.getElementById('comm_has_uf').checked;
         const hasRo = document.getElementById('comm_has_ro').checked;
-        const isRoLarge = document.getElementById('comm_is_ro_large').checked;
-        const hasRec = document.getElementById('comm_has_recycle').checked;
-
         document.getElementById('comm_ro_sub').style.display = hasRo ? 'flex' : 'none';
         document.getElementById('comm_pid_card').style.display = (hasSoft || hasUf || hasRo) ? 'block' : 'none';
         document.getElementById('comm_pid_softener').style.display = hasSoft ? 'block' : 'none';
         document.getElementById('comm_pid_uf').style.display = hasUf ? 'block' : 'none';
         document.getElementById('comm_pid_ro').style.display = hasRo ? 'block' : 'none';
-        document.getElementById('comm_wrap_pi_06').style.display = isRoLarge ? 'flex' : 'none';
-        document.getElementById('comm_wrap_fi_03').style.display = hasRec ? 'flex' : 'none';
-
+        document.getElementById('comm_wrap_pi_06').style.display = document.getElementById('comm_is_ro_large').checked ? 'flex' : 'none';
+        document.getElementById('comm_wrap_fi_03').style.display = document.getElementById('comm_has_recycle').checked ? 'flex' : 'none';
         updatePIDNumbering();
     }
 
@@ -400,7 +505,7 @@
         }
 
         const data = { checklist_items: getCommChecklist() };
-        document.querySelectorAll('#tabComm input').forEach(input => {
+        document.querySelectorAll('#tabComm input, #tabComm select, #tabComm textarea').forEach(input => {
             const key = input.id.replace('comm_', '');
             data[key] = input.type === 'checkbox' ? input.checked : input.value;
         });
@@ -425,9 +530,10 @@
 
     // LOGIKA HAND OVER
     function toggleHOSec() {
-        const sections = ['raw_water', 'clarifier', 'filtration', 'softener', 'uf', 'ro', 'cip', 'panel'];
+        const sections = ['raw_water', 'clarifier', 'filtration', 'softener', 'uf', 'int_tank', 'ro', 'cip', 'panel'];
         sections.forEach(sec => {
-            document.getElementById(`ho_sec_${sec}`).style.display = document.getElementById(`ho_has_${sec}`).checked ? 'block' : 'none';
+            const el = document.getElementById(`ho_sec_${sec}`);
+            if(el) el.style.display = document.getElementById(`ho_has_${sec}`).checked ? 'block' : 'none';
         });
     }
 
@@ -437,7 +543,8 @@
         }
 
         const data = {};
-        document.querySelectorAll('#tabHO input').forEach(input => {
+        // Membaca input, textarea, dan juga select (Dropdown)
+        document.querySelectorAll('#tabHO input, #tabHO textarea, #tabHO select').forEach(input => {
             const key = input.id.replace('ho_', '');
             data[key] = input.type === 'checkbox' ? input.checked : input.value;
         });
