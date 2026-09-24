@@ -12,6 +12,7 @@
             --bg-body: #f1f5f9; --bg-card: #ffffff;
             --border: #e2e8f0; --border-focus: #bae6fd;
             --text-main: #0f172a; --text-muted: #64748b; --text-light: #94a3b8;
+            --danger: #dc2626; --danger-light: #fee2e2;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.025);
             --shadow-float: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
@@ -27,11 +28,15 @@
 
         .container { max-width: 1000px; margin: auto; padding: 24px; }
 
-        .tabs { display: inline-flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 14px; margin-bottom: 30px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box; }
+        .tabs { display: inline-flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 14px; margin-bottom: 12px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box; }
         .tab-btn { flex: 1; padding: 14px 20px; font-size: 14px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; color: #475569; background: transparent; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active-comm { background: var(--bg-card); color: var(--primary); box-shadow: var(--shadow-sm); }
         .tab-btn.active-ho { background: var(--bg-card); color: var(--success); box-shadow: var(--shadow-sm); }
+
+        .toolbar-row { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+        .reset-link { background: none; border: none; color: var(--text-muted); font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; font-family: inherit; padding: 4px; }
+        .reset-link:hover { color: var(--danger); }
         
         .tab-content { display: none; animation: fadeUp 0.4s ease forwards; }
         .tab-content.active { display: block; }
@@ -48,12 +53,15 @@
         .input-group { display: flex; flex-direction: column; }
         label { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #334155; }
         .label-sub { color: var(--success); font-size: 12px; font-weight: 800; border-bottom: 1px solid var(--success-light); padding-bottom: 4px; margin-top: 16px; display: inline-block; }
-        input[type="text"], textarea, select { width: 100%; box-sizing: border-box; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 13px; font-family: inherit; background: #f8fafc; color: var(--text-main); transition: all 0.2s ease; }
-        input[type="text"]:focus, textarea:focus, select:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px var(--border-focus); outline: none; }
+        input[type="text"], input[type="number"], textarea, select { width: 100%; box-sizing: border-box; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 13px; font-family: inherit; background: #f8fafc; color: var(--text-main); transition: all 0.2s ease; }
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 4px var(--border-focus); outline: none; }
         textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
         input::placeholder, textarea::placeholder { color: var(--text-light); font-weight: 500; font-size: 12px; }
         .flex-row { display: flex; gap: 10px; width: 100%; flex-wrap: wrap; }
         @media (max-width: 600px) { .flex-row > input { flex: 1 1 45% !important; } }
+
+        /* Field wajib yang kosong saat validasi */
+        .input-error { border-color: var(--danger) !important; box-shadow: 0 0 0 4px rgba(220,38,38,0.15) !important; background: var(--danger-light) !important; }
 
         .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
         .module-checkbox { display: none; }
@@ -86,6 +94,12 @@
         .result-box h3 { margin: 0; font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .doc-item a { background: var(--text-main); color: #fff; padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; transition: 0.2s; }
         .doc-item a:hover { transform: scale(1.05); }
+
+        /* TOAST NOTIFICATION */
+        .bk-toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -20px); background: var(--text-main); color: #fff; padding: 14px 24px; border-radius: 12px; font-size: 13px; font-weight: 700; z-index: 10000; opacity: 0; transition: all 0.3s ease; box-shadow: var(--shadow-float); max-width: 90%; text-align: center; pointer-events: none; }
+        .bk-toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .bk-toast-error { background: var(--danger); }
+        .bk-toast-success { background: var(--success); }
     </style>
 </head>
 <body>
@@ -101,6 +115,10 @@
     <div class="tabs">
         <button class="tab-btn active-comm" id="tabBtnComm" onclick="switchTab('commissioning')">Commissioning Report</button>
         <button class="tab-btn" id="tabBtnHO" onclick="switchTab('handover')">Hand Over (HO) Document</button>
+    </div>
+
+    <div class="toolbar-row">
+        <button type="button" class="reset-link" onclick="resetForm(getActiveTabId())">&#8635; Reset Form Ini</button>
     </div>
 
     <!-- ==================== TAB 1: COMMISSIONING ==================== -->
@@ -481,6 +499,11 @@
     const URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
     const URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
 
+    // ---------- HELPER: TAB AKTIF ----------
+    function getActiveTabId() {
+        return document.getElementById('tabComm').classList.contains('active') ? 'tabComm' : 'tabHO';
+    }
+
     function switchTab(tab) {
         document.getElementById('tabBtnComm').className = tab === 'commissioning' ? 'tab-btn active-comm' : 'tab-btn';
         document.getElementById('tabBtnHO').className = tab === 'handover' ? 'tab-btn active-ho' : 'tab-btn';
@@ -490,6 +513,102 @@
         document.getElementById('actionComm').style.display = tab === 'commissioning' ? 'flex' : 'none';
         document.getElementById('actionHO').style.display = tab === 'handover' ? 'flex' : 'none';
     }
+
+    // ---------- TOAST NOTIFICATION (pengganti alert) ----------
+    function showToast(msg, type) {
+        const old = document.getElementById('bkToast');
+        if (old) old.remove();
+        const toast = document.createElement('div');
+        toast.id = 'bkToast';
+        toast.className = 'bk-toast' + (type ? ' bk-toast-' + type : '');
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+
+    // ---------- VALIDASI FIELD WAJIB (generik, baca atribut required) ----------
+    function validateRequired(tabId) {
+        let firstInvalid = null;
+        document.querySelectorAll('#' + tabId + ' [required]').forEach(el => {
+            el.classList.remove('input-error');
+            if (!el.value || !el.value.trim()) {
+                el.classList.add('input-error');
+                if (!firstInvalid) firstInvalid = el;
+            }
+        });
+        if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalid.focus();
+            showToast('Ada field wajib (*) yang belum diisi — cek yang ditandai merah', 'error');
+            return false;
+        }
+        return true;
+    }
+
+    // Hilangkan highlight merah begitu user mulai mengisi field itu
+    document.addEventListener('input', function (e) {
+        if (e.target.classList && e.target.classList.contains('input-error')) {
+            e.target.classList.remove('input-error');
+        }
+    });
+
+    // ---------- DRAFT AUTOSAVE (localStorage) ----------
+    const DRAFT_KEYS = { tabComm: 'bk_draft_comm', tabHO: 'bk_draft_ho' };
+    let formIsDirty = false;
+
+    function saveDraft(tabId) {
+        const data = {};
+        document.querySelectorAll('#' + tabId + ' input, #' + tabId + ' select, #' + tabId + ' textarea').forEach(el => {
+            data[el.id] = (el.type === 'checkbox') ? el.checked : el.value;
+        });
+        try { localStorage.setItem(DRAFT_KEYS[tabId], JSON.stringify(data)); } catch (e) { /* storage penuh/diblokir, abaikan */ }
+    }
+
+    function loadDraft(tabId) {
+        let raw;
+        try { raw = localStorage.getItem(DRAFT_KEYS[tabId]); } catch (e) { return false; }
+        if (!raw) return false;
+        try {
+            const data = JSON.parse(raw);
+            let restoredAny = false;
+            Object.keys(data).forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                if (el.type === 'checkbox') el.checked = !!data[id];
+                else el.value = data[id];
+                restoredAny = true;
+            });
+            return restoredAny;
+        } catch (e) { return false; }
+    }
+
+    function clearDraft(tabId) {
+        try { localStorage.removeItem(DRAFT_KEYS[tabId]); } catch (e) { /* abaikan */ }
+    }
+
+    function resetForm(tabId) {
+        if (!confirm('Yakin mau reset semua isian di form ini? Draft yang tersimpan juga akan dihapus.')) return;
+        document.querySelectorAll('#' + tabId + ' input, #' + tabId + ' select, #' + tabId + ' textarea').forEach(el => {
+            if (el.type === 'checkbox') el.checked = false;
+            else if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            else el.value = (el.id === 'ho_contractor_name') ? 'PT Bening Khatulistiwa' : '';
+            el.classList.remove('input-error');
+        });
+        clearDraft(tabId);
+        if (tabId === 'tabComm') { toggleCommPID(); } else { toggleHOSec(); }
+        showToast('Form berhasil direset', 'success');
+    }
+
+    window.addEventListener('beforeunload', function (e) {
+        if (formIsDirty) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
 
     function updatePIDNumbering() {
         let piCount = 1, fiCount = 1, psCount = 1;
@@ -607,9 +726,7 @@
     }
 
     function submitCommissioning() {
-        if (!document.getElementById('comm_project_name').value || !document.getElementById('comm_company_name').value) {
-            alert('Project Name dan Company Name wajib diisi!'); return;
-        }
+        if (!validateRequired('tabComm')) return;
 
         const data = { checklist_items: getCommChecklist() };
         document.querySelectorAll('#tabComm input, #tabComm select, #tabComm textarea').forEach(input => {
@@ -626,13 +743,17 @@
             document.getElementById('btnComm').style.display = 'flex';
             document.getElementById('loadComm').style.display = 'none';
             if (res.status === 'success') {
+                formIsDirty = false;
                 document.getElementById('resComm').style.display = 'flex';
                 document.getElementById('listComm').innerHTML = `<a href="${res.documentUrl}" target="_blank">Buka File Dokumen</a>`;
-            } else alert('Error: ' + res.message);
+                showToast('Dokumen Commissioning berhasil dibuat', 'success');
+            } else {
+                showToast('Error: ' + res.message, 'error');
+            }
         }).catch(err => {
             document.getElementById('btnComm').style.display = 'flex';
             document.getElementById('loadComm').style.display = 'none';
-            alert('Jaringan Error! Periksa koneksi internet Anda.');
+            showToast('Jaringan error! Periksa koneksi internet Anda.', 'error');
         });
     }
 
@@ -645,9 +766,7 @@
     }
 
     function submitHandOver() {
-        if (!document.getElementById('ho_project_name').value || !document.getElementById('ho_buyer_company').value) {
-            alert('Project Name dan Buyer Company wajib diisi!'); return;
-        }
+        if (!validateRequired('tabHO')) return;
 
         const data = {};
         document.querySelectorAll('#tabHO input, #tabHO textarea, #tabHO select').forEach(input => {
@@ -664,15 +783,47 @@
             document.getElementById('btnHO').style.display = 'flex';
             document.getElementById('loadHO').style.display = 'none';
             if (res.status === 'success') {
+                formIsDirty = false;
                 document.getElementById('resHO').style.display = 'flex';
                 document.getElementById('listHO').innerHTML = `<a href="${res.documentUrl}" target="_blank">Buka File Dokumen</a>`;
-            } else alert('Error: ' + res.message);
+                showToast('Dokumen Hand Over berhasil dibuat', 'success');
+            } else {
+                showToast('Error: ' + res.message, 'error');
+            }
         }).catch(err => {
             document.getElementById('btnHO').style.display = 'flex';
             document.getElementById('loadHO').style.display = 'none';
-            alert('Jaringan Error! Periksa koneksi internet Anda.');
+            showToast('Jaringan error! Periksa koneksi internet Anda.', 'error');
         });
     }
+
+    // ---------- INIT SAAT HALAMAN DIMUAT ----------
+    document.addEventListener('DOMContentLoaded', function () {
+        // Ubah field Qty/kW/Cap/Vol jadi type="number" secara generik berdasarkan pola nama id
+        document.querySelectorAll('input[id]').forEach(el => {
+            if (/_(qty|kw|cap|vol)$/i.test(el.id)) {
+                el.setAttribute('type', 'number');
+                el.setAttribute('min', '0');
+                el.setAttribute('step', 'any');
+                el.setAttribute('inputmode', 'decimal');
+            }
+        });
+
+        // Pulihkan draft tersimpan (kalau ada)
+        const restoredComm = loadDraft('tabComm');
+        const restoredHO = loadDraft('tabHO');
+        if (restoredComm) toggleCommPID();
+        if (restoredHO) toggleHOSec();
+        if (restoredComm || restoredHO) showToast('Draft sebelumnya berhasil dipulihkan', 'success');
+
+        // Autosave tiap ada perubahan input
+        ['tabComm', 'tabHO'].forEach(tabId => {
+            document.querySelectorAll('#' + tabId + ' input, #' + tabId + ' select, #' + tabId + ' textarea').forEach(el => {
+                el.addEventListener('input', () => { formIsDirty = true; saveDraft(tabId); });
+                el.addEventListener('change', () => { formIsDirty = true; saveDraft(tabId); });
+            });
+        });
+    });
 </script>
 
 </body>
