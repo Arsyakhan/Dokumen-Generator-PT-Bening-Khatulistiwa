@@ -362,7 +362,7 @@
                     
                     <label class="label-sub">RO Feed Water Pump</label>
                     <div class="flex-row" style="margin-top: 8px;">
-                        <input type="text" id="ho_ro_fwp_brand" placeholder="Brand" style="flex:1;">
+                        <input type="text" id="ho_ro_fwp_brand" placeholder="Brand (ex: CNP)" style="flex:1;">
                         <input type="text" id="ho_ro_fwp_model" placeholder="Model" style="flex:2;">
                         <input type="text" id="ho_ro_fwp_cap" placeholder="m3/hr" style="flex:1;">
                         <input type="text" id="ho_ro_fwp_kw" placeholder="kW" style="flex:1;">
@@ -371,8 +371,8 @@
 
                     <label class="label-sub">RO Booster Pump</label>
                     <div class="flex-row" style="margin-top: 8px;">
-                        <input type="text" id="ho_ro_bp_brand" placeholder="Brand" style="flex:1;">
-                        <input type="text" id="ho_ro_bp_model" placeholder="Model (CR 64-5-1)" style="flex:2;">
+                        <input type="text" id="ho_ro_bp_brand" placeholder="Brand (ex: GRUNDFOS)" style="flex:1;">
+                        <input type="text" id="ho_ro_bp_model" placeholder="Model (ex: CR 64-5-1)" style="flex:2;">
                         <input type="text" id="ho_ro_bp_kw" placeholder="Power kW" style="flex:1;">
                         <input type="text" id="ho_ro_bp_qty" placeholder="Qty" style="flex:1;">
                     </div>
@@ -551,12 +551,67 @@
         updatePIDNumbering();
     }
 
+    function getCommChecklist() {
+        let list = [];
+        
+        // 1. Item Wajib (Base)
+        list.push("( ) Power supply properly joined to electrical Control panel.");
+
+        // 2. Modul Pre-Treatment & Standalone (Hanya muncul jika dicentang)
+        if (document.getElementById('comm_has_clarifier').checked) {
+            list.push("( ) Inlet Transfer pump properly joined to Outlet Settlement Tank / Raw Water Line.");
+        }
+        if (document.getElementById('comm_has_dosing').checked) { 
+            list.push("( ) Chemical Dosing line properly joined to main pipe."); 
+            list.push("( ) Dosing pump properly joined to Chemical Tank."); 
+        }
+        if (document.getElementById('comm_has_birm').checked) { 
+            list.push("( ) Inlet Birm Filter properly joined to feed line."); 
+            list.push("( ) Outlet Birm Filter properly joined to the next treatment stage."); 
+        }
+        if (document.getElementById('comm_has_mmf').checked) { 
+            list.push("( ) Inlet MMF properly joined to feed line."); 
+            list.push("( ) Outlet MMF properly joined to the next treatment stage."); 
+        }
+        if (document.getElementById('comm_has_acf').checked) { 
+            list.push("( ) Inlet ACF properly joined to feed line."); 
+            list.push("( ) Outlet ACF properly joined to the next treatment stage."); 
+        }
+        if (document.getElementById('comm_has_softener').checked) {
+            list.push("( ) Softener brine line properly joined to Brine Tank.");
+        }
+        if (document.getElementById('comm_has_uf').checked) { 
+            list.push("( ) Inlet UF Feed Water Pump properly joined to Feed Water Tank."); 
+            list.push("( ) Outlet UF properly joined to UF Permeate Tank."); 
+            list.push("( ) Outlet cleaning line UF properly joined to UF Cleaning Tank."); 
+            list.push("( ) Inlet UF Backwash pump properly joined to UF Product Tank."); 
+        }
+
+        // 3. Modul RO (Persis 100% SOP Bening Khatulistiwa)
+        if (document.getElementById('comm_has_ro').checked) {
+            list.push("( ) Inlet raw water line properly joined to Inlet RO.");
+            list.push("( ) Outlet product line RO properly joined to Product water storage tank and Cleaning/Flushing tank");
+            list.push("( ) Outlet reject line RO properly joined to water drain line");
+            list.push("( ) Outlet cleaning line RO properly joined to Cleaning/Flushing tank");
+            list.push("( ) Outlet of Cleaning/Flushing tank properly joined to inlet of Cleaning/Flushing pump");
+            list.push("( ) Outlet Cleaning/Flushing Pump properly joined to Inlet of Cartridge filter");
+        }
+
+        // 4. Modul Tambahan
+        if (document.getElementById('comm_has_mixedbed').checked) { 
+            list.push("( ) HCl and NaOH chemicals already prepared necessarily."); 
+            list.push("( ) Chemical drain nozzle properly joined to chemical drain line."); 
+        }
+        
+        return list.join("\n");
+    }
+
     function submitCommissioning() {
         if (!document.getElementById('comm_project_name').value || !document.getElementById('comm_company_name').value) {
             alert('Project Name dan Company Name wajib diisi!'); return;
         }
 
-        const data = {};
+        const data = { checklist_items: getCommChecklist() };
         document.querySelectorAll('#tabComm input, #tabComm select, #tabComm textarea').forEach(input => {
             const key = input.id.replace('comm_', '');
             data[key] = input.type === 'checkbox' ? input.checked : input.value;
