@@ -17,6 +17,7 @@
             --shadow-float: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         }
 
+        /* PADDING BOTTOM DITAMBAH AGAR KONTEN TIDAK TERTUTUP TOMBOL */
         body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background-color: var(--bg-body); margin: 0; padding-bottom: 160px; color: var(--text-main); line-height: 1.5; -webkit-font-smoothing: antialiased; }
         
         .top-navbar { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 20px 0; border-bottom: 1px solid rgba(226, 232, 240, 0.6); position: sticky; top: 0; z-index: 50; }
@@ -210,17 +211,14 @@
                 <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_panel" onchange="toggleHOSec()"><div class="module-card">Control Panel</div></label>
             </div>
 
-            <!-- Dynamic Specs Forms -->
+            <!-- RAW WATER -->
             <div id="ho_sec_raw_water" class="dynamic-sec ho-style">
                 <h4>Raw Water System</h4>
                 <div class="input-group" style="margin-bottom:16px;"><label>Feed Water Pump Specs (Full String)</label><input type="text" id="ho_rw_pump_specs" placeholder="ex: CNP CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
                 <div class="grid-2">
                     <div class="input-group">
                         <label>Tank Capacity & Unit</label>
-                        <div class="flex-row">
-                            <input type="text" id="ho_rw_tank_cap" placeholder="ex: 5000" style="flex:2;">
-                            <select id="ho_rw_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
-                        </div>
+                        <div class="flex-row"><input type="text" id="ho_rw_tank_cap" placeholder="ex: 5000" style="flex:2;"><select id="ho_rw_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
                     </div>
                     <div class="input-group"><label>Tank Material</label><input type="text" id="ho_rw_tank_mat" placeholder="ex: PE / FRP / Carbon Steel"></div>
                     <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_rw_tank_qty" placeholder="ex: 1"></div>
@@ -228,34 +226,27 @@
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_rw_additional_items" placeholder="ex:&#10;- 1 Lot PVC Piping&#10;- 1 Unit Float Switch"></textarea></div>
             </div>
 
+            <!-- CLARIFIER -->
             <div id="ho_sec_clarifier" class="dynamic-sec ho-style">
                 <h4>Clarifier System</h4>
                 <div class="grid-2">
                     <div class="input-group">
                         <label>Capacity & Unit</label>
-                        <div class="flex-row">
-                            <input type="text" id="ho_clarifier_cap" placeholder="ex: 10" style="flex:2;">
-                            <select id="ho_clarifier_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select>
-                        </div>
+                        <div class="flex-row"><input type="text" id="ho_clarifier_cap" placeholder="ex: 10" style="flex:2;"><select id="ho_clarifier_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
                     </div>
                     <div class="input-group"><label>Tank Material</label><input type="text" id="ho_clarifier_mat" placeholder="ex: Carbon Steel with Epoxy"></div>
                 </div>
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_clarifier_additional_items" placeholder="ex:&#10;- Static Mixer, Qty: 1 lot"></textarea></div>
             </div>
 
+            <!-- FILTER 1 -->
             <div id="ho_sec_filter_1" class="dynamic-sec ho-style">
                 <h4>Filter 1 (Primary Filter)</h4>
                 <div class="grid-2">
                     <div class="input-group"><label>Filter Type (Name)</label><input type="text" id="ho_f1_type" placeholder="ex: Multi Media Filter"></div>
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_f1_cap" placeholder="ex: 5" style="flex:2;"><select id="ho_f1_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_f1_cap" placeholder="ex: 5" style="flex:2;"><select id="ho_f1_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div></div>
                     <div class="input-group"><label>FRP Tank Size</label><input type="text" id="ho_f1_tank_size" placeholder="ex: 1465 / 2162"></div>
-                    <div class="input-group">
-                        <label>Media Volume & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_f1_media_vol" placeholder="ex: 175" style="flex:2;"><select id="ho_f1_media_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Media Volume & Unit</label><div class="flex-row"><input type="text" id="ho_f1_media_vol" placeholder="ex: 175" style="flex:2;"><select id="ho_f1_media_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div></div>
                     <div class="input-group"><label>Media Type (Name)</label><input type="text" id="ho_f1_media_type" placeholder="ex: Anthracite & Silica Sand"></div>
                     <div class="input-group"><label>Valve Control</label><input type="text" id="ho_f1_valve" placeholder="ex: Manual Multiport Valve"></div>
                     <div class="input-group"><label>Qty (Sets)</label><input type="text" id="ho_f1_qty" placeholder="ex: 1"></div>
@@ -263,19 +254,14 @@
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_f1_additional_items" placeholder="ex:&#10;- Pressure Gauge 0-6 Bar"></textarea></div>
             </div>
 
+            <!-- FILTER 2 -->
             <div id="ho_sec_filter_2" class="dynamic-sec ho-style">
                 <h4>Filter 2 (Secondary Filter)</h4>
                 <div class="grid-2">
                     <div class="input-group"><label>Filter Type (Name)</label><input type="text" id="ho_f2_type" placeholder="ex: Activated Carbon Filter"></div>
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_f2_cap" placeholder="ex: 5" style="flex:2;"><select id="ho_f2_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_f2_cap" placeholder="ex: 5" style="flex:2;"><select id="ho_f2_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div></div>
                     <div class="input-group"><label>FRP Tank Size</label><input type="text" id="ho_f2_tank_size" placeholder="ex: 1465 / 2162"></div>
-                    <div class="input-group">
-                        <label>Media Volume & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_f2_media_vol" placeholder="ex: 175" style="flex:2;"><select id="ho_f2_media_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Media Volume & Unit</label><div class="flex-row"><input type="text" id="ho_f2_media_vol" placeholder="ex: 175" style="flex:2;"><select id="ho_f2_media_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div></div>
                     <div class="input-group"><label>Media Type (Name)</label><input type="text" id="ho_f2_media_type" placeholder="ex: Activated Carbon"></div>
                     <div class="input-group"><label>Valve Control</label><input type="text" id="ho_f2_valve" placeholder="ex: Manual Multiport Valve"></div>
                     <div class="input-group"><label>Qty (Sets)</label><input type="text" id="ho_f2_qty" placeholder="ex: 1"></div>
@@ -283,25 +269,22 @@
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_f2_additional_items" placeholder="ex:&#10;- Pressure Gauge 0-6 Bar"></textarea></div>
             </div>
 
+            <!-- ULTRA FILTRATION -->
             <div id="ho_sec_uf" class="dynamic-sec ho-style">
                 <h4>Ultra Filtration</h4>
-                <div class="input-group" style="margin-bottom:12px;"><label>UF Feed Water Pump Specs</label><input type="text" id="ho_uf_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
-                <div class="input-group" style="margin-bottom:12px;"><label>UF Backwash Pump Specs</label><input type="text" id="ho_uf_bw_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
-                <div class="input-group" style="margin-bottom:24px;"><label>Air Blower Specs</label><input type="text" id="ho_uf_blower_specs" placeholder="ex: Backport, Model: Rb750, 0.75 kW, 50 Hz, 380v"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>UF Feed Water Pump Specs (Full String)</label><input type="text" id="ho_uf_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                <div class="input-group" style="margin-bottom:12px;"><label>UF Backwash Pump Specs (Full String)</label><input type="text" id="ho_uf_bw_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                <div class="input-group" style="margin-bottom:24px;"><label>Air Blower Specs (Full String)</label><input type="text" id="ho_uf_blower_specs" placeholder="ex: Backport, Model: Rb750, 0.75 kW, 50 Hz, 380v"></div>
                 
                 <div class="grid-2">
                     <div class="input-group"><label>UF Model Name</label><input type="text" id="ho_uf_model" placeholder="ex: MTN-27H-B90-04"></div>
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_uf_cap" placeholder="ex: 2.7" style="flex:2;"><select id="ho_uf_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                    </div>
-                    <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_uf_mem_brand" placeholder="ex: Motian UF30B90"></div>
-                    <div class="input-group"><label>Membrane Qty</label><input type="text" id="ho_uf_mem_qty" placeholder="ex: 4"></div>
-                    
-                    <div class="input-group">
-                        <label>CIP Tank Cap & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_uf_cip_tank_cap" placeholder="ex: 300" style="flex:2;"><select id="ho_uf_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_uf_cap" placeholder="ex: 2.7" style="flex:2;"><select id="ho_uf_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div></div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 12px;"><label>Membrane Specs (Full String)</label><input type="text" id="ho_uf_mem_specs" placeholder="ex: 4 units of UF membrane Motian UF30B90"></div>
+                
+                <div class="grid-2" style="margin-top: 12px;">
+                    <div class="input-group"><label>CIP Tank Cap & Unit</label><div class="flex-row"><input type="text" id="ho_uf_cip_tank_cap" placeholder="ex: 300" style="flex:2;"><select id="ho_uf_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div></div>
                     <div class="input-group"><label>CIP Tank Material</label><input type="text" id="ho_uf_cip_tank_mat" placeholder="ex: PE"></div>
                     <div class="input-group"><label>Solenoid Valve Qty</label><input type="text" id="ho_uf_sv_qty" placeholder="ex: 3"></div>
                     <div class="input-group"><label>Pressure Switch Qty</label><input type="text" id="ho_uf_ps_qty" placeholder="ex: 2"></div>
@@ -311,87 +294,68 @@
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_uf_additional_items" placeholder="ex:&#10;- 2 units of Pressure switch Saginomiya, 0-6 bar"></textarea></div>
             </div>
 
+            <!-- INTERMEDIATE TANK -->
             <div id="ho_sec_int_tank" class="dynamic-sec ho-style">
                 <h4>Intermediate Tank</h4>
                 <div class="grid-2">
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_int_tank_cap" placeholder="ex: 500" style="flex:2;"><select id="ho_int_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_int_tank_cap" placeholder="ex: 500" style="flex:2;"><select id="ho_int_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div></div>
                     <div class="input-group"><label>Material</label><input type="text" id="ho_int_tank_mat" placeholder="ex: PE / PP"></div>
                 </div>
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_int_additional_items" placeholder="ex:&#10;- Level Switch Radar"></textarea></div>
             </div>
 
+            <!-- SOFTENER -->
             <div id="ho_sec_softener" class="dynamic-sec ho-style">
                 <h4>Softener System</h4>
                 <div class="grid-2">
                     <div class="input-group"><label>Softener Model</label><input type="text" id="ho_soft_model" placeholder="ex: TS-30 P"></div>
-                    <div class="input-group">
-                        <label>Capacity & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_soft_cap" placeholder="ex: 2.7" style="flex:2;"><select id="ho_soft_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_soft_cap" placeholder="ex: 2.7" style="flex:2;"><select id="ho_soft_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div></div>
                     <div class="input-group"><label>FRP Size</label><input type="text" id="ho_soft_tank_size" placeholder="ex: 1465"></div>
                     <div class="input-group"><label>Controller</label><input type="text" id="ho_soft_controller" placeholder="ex: Autotrol 255-740 c/w microswitch"></div>
-                    <div class="input-group">
-                        <label>Resin Cation Vol & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_soft_resin_vol" placeholder="ex: 100" style="flex:2;"><select id="ho_soft_resin_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Brine Tank Cap & Unit</label>
-                        <div class="flex-row"><input type="text" id="ho_soft_brine_cap" placeholder="ex: 200" style="flex:2;"><select id="ho_soft_brine_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
-                    </div>
+                    <div class="input-group"><label>Resin Cation Vol & Unit</label><div class="flex-row"><input type="text" id="ho_soft_resin_vol" placeholder="ex: 100" style="flex:2;"><select id="ho_soft_resin_unit" style="flex:1;"><option value="Liters">Liters</option><option value="Bag">Bag</option><option value="kg">kg</option></select></div></div>
+                    <div class="input-group"><label>Brine Tank Cap & Unit</label><div class="flex-row"><input type="text" id="ho_soft_brine_cap" placeholder="ex: 200" style="flex:2;"><select id="ho_soft_brine_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div></div>
                 </div>
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_soft_additional_items" placeholder="ex:&#10;- 1 unit of Solenoid valve nylon 1”&#10;- 1 bag of Salt"></textarea></div>
             </div>
 
-            <!-- REVERSE OSMOSIS PACKAGE 3-in-1 -->
+            <!-- REVERSE OSMOSIS PACKAGE 3-in-1 (ALL FULL STRING) -->
             <div id="ho_sec_ro" class="dynamic-sec ho-style">
                 <h4>Reverse Osmosis Package (RO + Anti Scalant + CIP)</h4>
                 
                 <!-- A. Main RO Unit -->
                 <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #bae6fd;">
                     <h5 style="margin: 0 0 16px 0; color: #0369a1; font-size: 14px;">A. Main Reverse Osmosis Unit</h5>
-                    <div class="input-group" style="margin-bottom: 12px;"><label>RO Feed Water Pump Specs</label><input type="text" id="ho_ro_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>RO Feed Water Pump Specs (Full String)</label><input type="text" id="ho_ro_feed_pump_specs" placeholder="ex: CHL 4-30, Cap. 2.7 m3/hr @25m, 0.55kW, 50 Hz, 380v"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Booster Pump Specs (Full String)</label><input type="text" id="ho_ro_booster_specs" placeholder="ex: GRUNDFOS, Model CR 64-5-1, 30 kW, Qty: 1 unit"></div>
+                    
                     <div class="grid-2">
                         <div class="input-group"><label>RO Unit Model</label><input type="text" id="ho_ro_model" placeholder="ex: BT40-40K-0840"></div>
-                        <div class="input-group">
-                            <label>Capacity & Unit</label>
-                            <div class="flex-row"><input type="text" id="ho_ro_cap" placeholder="ex: 40" style="flex:2;"><select id="ho_ro_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div>
-                        </div>
+                        <div class="input-group"><label>Capacity & Unit</label><div class="flex-row"><input type="text" id="ho_ro_cap" placeholder="ex: 40" style="flex:2;"><select id="ho_ro_unit" style="flex:1;"><option value="m3/hr">m3/hr</option><option value="LPM">LPM</option><option value="CMD">CMD</option></select></div></div>
                     </div>
                     
-                    <div class="input-group" style="margin-top: 12px;"><label>Booster Pump Specs</label><input type="text" id="ho_ro_booster_specs" placeholder="ex: GRUNDFOS, Model CR 64-5-1, 30 kW, Qty: 1 unit"></div>
-                    
-                    <div class="grid-2" style="margin-top: 12px;">
-                        <div class="input-group"><label>Membrane Brand</label><input type="text" id="ho_ro_mem_brand" placeholder="ex: FILMTEC"></div>
-                        <div class="input-group"><label>Membrane Model & Qty</label><div class="flex-row"><input type="text" id="ho_ro_mem_model" placeholder="ex: BW30-400IG" style="flex:2;"><input type="text" id="ho_ro_mem_qty" placeholder="Qty" style="flex:1;"></div></div>
-                        
-                        <div class="input-group"><label>Pressure Vessel Brand</label><input type="text" id="ho_ro_vessel_brand" placeholder="ex: PENTAIR, CODELINES"></div>
-                        <div class="input-group"><label>Vessel Model & Qty</label><div class="flex-row"><input type="text" id="ho_ro_vessel_model" placeholder="ex: 80S30-5" style="flex:2;"><input type="text" id="ho_ro_vessel_qty" placeholder="Qty" style="flex:1;"></div></div>
-                    </div>
-
-                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Housing Specs</label><input type="text" id="ho_ro_cfh_specs" placeholder="ex: Stainless Steel Material, Model CFHD 27x40”, Qty: 1 unit"></div>
-                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Specs</label><input type="text" id="ho_ro_cf_specs" placeholder="ex: 40” length filter cartridge, Qty: 27 units"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Membrane Specs (Full String)</label><input type="text" id="ho_ro_mem_specs" placeholder="ex: FILMTEC Membrane, Model BW30-400IG, Qty: 40 units"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Pressure Vessel Specs (Full String)</label><input type="text" id="ho_ro_vessel_specs" placeholder="ex: PENTAIR, CODELINES, RO Pressure Vessel, Model 80S30-5, Qty: 8 units"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Housing Specs (Full String)</label><input type="text" id="ho_ro_cfh_specs" placeholder="ex: Stainless Steel Material, Model CFHD 27x40”, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Cartridge Filter Specs (Full String)</label><input type="text" id="ho_ro_cf_specs" placeholder="ex: 40” length filter cartridge, Qty: 27 units"></div>
                     
                     <div class="input-group" style="margin-top: 12px;"><label>Flow Meters Specs (Gunakan Enter untuk baris baru)</label><textarea id="ho_ro_fm_specs" placeholder="ex:&#10;Blue white Digital flow meter, model RTP... Qty: 1 unit&#10;GF flow meter Inline, model 198... Qty: 1 unit"></textarea></div>
-                    <div class="input-group" style="margin-top: 12px;"><label>Conductivity Meter Specs</label><input type="text" id="ho_ro_cond_specs" placeholder="ex: 1 Set of Analog Myron 0 - 200 µS/cm, c/w sensor"></div>
+                    <div class="input-group" style="margin-top: 12px;"><label>Conductivity Meter Specs (Full String)</label><input type="text" id="ho_ro_cond_specs" placeholder="ex: 1 Set of Analog Myron 0 - 200 µS/cm, c/w sensor"></div>
                     <div class="input-group" style="margin-top: 12px;"><label>Additional RO Instruments</label><textarea id="ho_ro_additional_items" placeholder="ex:&#10;- Pressure Switch Saginomiya&#10;- Pressure Gauge Panel Mount"></textarea></div>
                 </div>
 
                 <!-- B. Anti Scalant System -->
                 <div style="background: #fdf4ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f5d0fe;">
                     <h5 style="margin: 0 0 16px 0; color: #86198f; font-size: 14px;">B. Anti Scalant System</h5>
-                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical Tank Specs</label><input type="text" id="ho_as_tank_specs" placeholder="ex: PE Material, Cap. 300 Liter, Qty: 1 unit"></div>
-                    <div class="input-group" style="margin-bottom: 12px;"><label>Dosing Pump Specs</label><input type="text" id="ho_as_pump_specs" placeholder="ex: SEKO, AKL800, Capacity 10 LPH, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical Tank Specs (Full String)</label><input type="text" id="ho_as_tank_specs" placeholder="ex: PE Material, Cap. 300 Liter, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Dosing Pump Specs (Full String)</label><input type="text" id="ho_as_pump_specs" placeholder="ex: SEKO, AKL800, Capacity 10 LPH, Qty: 1 unit"></div>
                     <div class="input-group"><label>Additional Items</label><textarea id="ho_as_additional_items" rows="2" placeholder="ex:&#10;- Static mixer..."></textarea></div>
                 </div>
 
                 <!-- C. CIP System dalam RO -->
                 <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #bbf7d0;">
                     <h5 style="margin: 0 0 16px 0; color: #166534; font-size: 14px;">C. Chemical Cleaning System (CIP)</h5>
-                    <div class="input-group" style="margin-bottom: 12px;"><label>Cleaning Pump Specs</label><input type="text" id="ho_ro_cip_pump_specs" placeholder="ex: GRUNDFOS, Model CR 45-1-1, 3 Kw, Qty: 1 unit"></div>
-                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical/Flushing Tank Specs</label><input type="text" id="ho_ro_cip_tank_specs" placeholder="ex: PE Material, Cap: 2000 liters, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Cleaning Pump Specs (Full String)</label><input type="text" id="ho_ro_cip_pump_specs" placeholder="ex: GRUNDFOS, Model CR 45-1-1, 3 Kw, Qty: 1 unit"></div>
+                    <div class="input-group" style="margin-bottom: 12px;"><label>Chemical/Flushing Tank Specs (Full String)</label><input type="text" id="ho_ro_cip_tank_specs" placeholder="ex: PE Material, Cap: 2000 liters, Qty: 1 unit"></div>
                     <div class="input-group"><label>Additional Items</label><textarea id="ho_ro_cip_additional_items" rows="2" placeholder="ex:&#10;- CIP Bag Filter..."></textarea></div>
                 </div>
             </div>
@@ -401,19 +365,14 @@
                 <h4>Chemical Dosing System (Standalone)</h4>
                 <div class="input-group" style="margin-bottom:16px;"><label>Dosing Pump Specs (Full String)</label><input type="text" id="ho_std_cip_pump_specs" placeholder="ex: SEKO, Capacity 18 LPH"></div>
                 <div class="grid-2">
-                    <div class="input-group">
-                        <label>Tank Cap & Unit</label>
-                        <div class="flex-row">
-                            <input type="text" id="ho_std_cip_tank_cap" placeholder="ex: 300" style="flex:2;">
-                            <select id="ho_std_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select>
-                        </div>
-                    </div>
+                    <div class="input-group"><label>Tank Cap & Unit</label><div class="flex-row"><input type="text" id="ho_std_cip_tank_cap" placeholder="ex: 300" style="flex:2;"><select id="ho_std_cip_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div></div>
                     <div class="input-group"><label>Tank Material</label><input type="text" id="ho_std_cip_tank_mat" placeholder="ex: Polyethylene"></div>
                     <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_std_cip_tank_qty" placeholder="ex: 1"></div>
                 </div>
                 <div class="input-group" style="margin-top: 16px;"><label>Additional Items</label><textarea id="ho_std_cip_additional_items" placeholder="ex:&#10;- Selang dosing & injector valve"></textarea></div>
             </div>
 
+            <!-- CONTROL PANEL -->
             <div id="ho_sec_panel" class="dynamic-sec ho-style">
                 <h4>Control Panel</h4>
                 <div class="input-group"><label>Panel Size (mm)</label><input type="text" id="ho_panel_size" placeholder="ex: 1000 x 800 x 300"></div>
@@ -451,7 +410,7 @@
 </div>
 
 <script>
-    // MASUKKAN URL APPS SCRIPT DI SINI
+    // MASUKKAN URL APPS SCRIPT ANDA DI SINI
     const URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
     const URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
 
