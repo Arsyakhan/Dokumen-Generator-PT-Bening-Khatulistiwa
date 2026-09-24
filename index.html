@@ -78,8 +78,8 @@
 
     <!-- TABS NAVIGATION -->
     <div class="tabs">
-        <button class="tab-btn active-comm" id="tabBtnComm" onclick="switchTab('commissioning')">📋 Commissioning Report</button>
-        <button class="tab-btn" id="tabBtnHO" onclick="switchTab('handover')">🤝 Hand Over (HO) Doc</button>
+        <button class="tab-btn active-comm" id="tabBtnComm" onclick="switchTab('commissioning')">Commissioning Report</button>
+        <button class="tab-btn" id="tabBtnHO" onclick="switchTab('handover')">Hand Over (HO) Doc</button>
     </div>
 
     <!-- ==================== TAB 1: COMMISSIONING ==================== -->
@@ -99,25 +99,25 @@
         <div class="card">
             <h3 class="card-title t-primary">2. Select Plant Modules</h3>
             <div class="module-grid">
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_clarifier"><div class="module-card">🌪️ Clarifier</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_dosing"><div class="module-card">🧪 Dosing Pump</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_birm"><div class="module-card">🪨 Birm Filter</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_mmf"><div class="module-card">🏖️ MMF</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_acf"><div class="module-card">⚫ ACF</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_softener" onchange="toggleCommPID()"><div class="module-card">🌫️ Softener</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_uf" onchange="toggleCommPID()"><div class="module-card">🔬 Ultra Filtration</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_ro" onchange="toggleCommPID()"><div class="module-card" style="border-width:2px;">💧 Reverse Osmosis</div></label>
-                <label><input type="checkbox" class="module-checkbox" id="comm_has_mixedbed"><div class="module-card">⚗️ Mixed Bed</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_clarifier"><div class="module-card">Clarifier</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_dosing"><div class="module-card">Dosing Pump</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_birm"><div class="module-card">Birm Filter</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_mmf"><div class="module-card">Multi Media Filter</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_acf"><div class="module-card">Activated Carbon</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_softener" onchange="toggleCommPID()"><div class="module-card">Softener</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_uf" onchange="toggleCommPID()"><div class="module-card">Ultra Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_ro" onchange="toggleCommPID()"><div class="module-card" style="font-weight: 700;">Reverse Osmosis</div></label>
+                <label><input type="checkbox" class="module-checkbox" id="comm_has_mixedbed"><div class="module-card">Mixed Bed</div></label>
             </div>
             
             <div id="comm_ro_sub" style="display:none; margin-top:15px; gap:10px;">
-                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_is_ro_large" onchange="toggleCommPID()"><div class="module-card" style="padding:10px;">+ Backpressure (RO Besar)</div></label>
-                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_has_recycle" onchange="toggleCommPID()"><div class="module-card" style="padding:10px;">+ Flow Recycle</div></label>
+                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_is_ro_large" onchange="toggleCommPID()"><div class="module-card" style="padding:10px; font-size:13px;">+ Backpressure (RO Besar)</div></label>
+                <label style="flex:1;"><input type="checkbox" class="module-checkbox" id="comm_has_recycle" onchange="toggleCommPID()"><div class="module-card" style="padding:10px; font-size:13px;">+ Flow Recycle</div></label>
             </div>
         </div>
 
         <div class="card" id="comm_pid_card" style="display:none;">
-            <h3 class="card-title t-primary">3. P&ID Instrument Tags <span style="font-size:12px; font-weight:normal; color:#64748b;">(Kosongkan untuk isi manual)</span></h3>
+            <h3 class="card-title t-primary">3. P&ID Instrument Tags <span style="font-size:12px; font-weight:normal; color:#64748b;">(Terisi otomatis, sesuaikan jika perlu)</span></h3>
             
             <div class="dynamic-sec" id="comm_pid_softener">
                 <h4>Softener Tags</h4>
@@ -190,14 +190,14 @@
         <div class="card">
             <h3 class="card-title t-success">2. Hand Over Specifications</h3>
             <div class="module-grid">
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_raw_water" onchange="toggleHOSec()"><div class="module-card">🌊 Raw Water</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_clarifier" onchange="toggleHOSec()"><div class="module-card">🌪️ Clarifier</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_filtration" onchange="toggleHOSec()"><div class="module-card">🪨 Filtration</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_softener" onchange="toggleHOSec()"><div class="module-card">🌫️ Softener</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_uf" onchange="toggleHOSec()"><div class="module-card">🔬 Ultra Filtration</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_ro" onchange="toggleHOSec()"><div class="module-card">💧 Reverse Osmosis</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_cip" onchange="toggleHOSec()"><div class="module-card">🧪 CIP & Dosing</div></label>
-                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_panel" onchange="toggleHOSec()"><div class="module-card">⚡ Control Panel</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_raw_water" onchange="toggleHOSec()"><div class="module-card">Raw Water</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_clarifier" onchange="toggleHOSec()"><div class="module-card">Clarifier</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_filtration" onchange="toggleHOSec()"><div class="module-card">Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_softener" onchange="toggleHOSec()"><div class="module-card">Softener</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_uf" onchange="toggleHOSec()"><div class="module-card">Ultra Filtration</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_ro" onchange="toggleHOSec()"><div class="module-card" style="font-weight: 700;">Reverse Osmosis</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_cip" onchange="toggleHOSec()"><div class="module-card">CIP & Dosing</div></label>
+                <label><input type="checkbox" class="module-checkbox ho-check" id="ho_has_panel" onchange="toggleHOSec()"><div class="module-card">Control Panel</div></label>
             </div>
 
             <!-- Dynamic Specs Forms -->
@@ -295,7 +295,69 @@
         document.getElementById('tabHO').className = tab === 'handover' ? 'tab-content active' : 'tab-content';
     }
 
-    // LOGIKA COMMISSIONING
+    // LOGIKA P&ID SEQUENTIAL NUMBERING
+    function updatePIDNumbering() {
+        let piCount = 1;
+        let fiCount = 1;
+        let psCount = 1;
+        const pad = (num) => (num < 10 ? '0' : '') + num;
+
+        // Softener
+        if (document.getElementById('comm_has_softener').checked) {
+            document.getElementById('comm_tag_pi_soft_in').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_soft_out').value = 'PI-' + pad(piCount++);
+        } else {
+            document.getElementById('comm_tag_pi_soft_in').value = '';
+            document.getElementById('comm_tag_pi_soft_out').value = '';
+        }
+
+        // UF
+        if (document.getElementById('comm_has_uf').checked) {
+            document.getElementById('comm_tag_ps_uf_feed').value = 'PS-' + pad(psCount++);
+            document.getElementById('comm_tag_ps_uf_bw').value = 'PS-' + pad(psCount++);
+            document.getElementById('comm_tag_pi_uf_in').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_uf_out').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_fi_uf').value = 'FI-' + pad(fiCount++);
+        } else {
+            document.getElementById('comm_tag_ps_uf_feed').value = '';
+            document.getElementById('comm_tag_ps_uf_bw').value = '';
+            document.getElementById('comm_tag_pi_uf_in').value = '';
+            document.getElementById('comm_tag_pi_uf_out').value = '';
+            document.getElementById('comm_tag_fi_uf').value = '';
+        }
+
+        // RO
+        if (document.getElementById('comm_has_ro').checked) {
+            document.getElementById('comm_tag_pi_01').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_02').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_03').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_04').value = 'PI-' + pad(piCount++);
+            document.getElementById('comm_tag_pi_05').value = 'PI-' + pad(piCount++);
+            if (document.getElementById('comm_is_ro_large').checked) {
+                document.getElementById('comm_tag_pi_06').value = 'PI-' + pad(piCount++);
+            } else {
+                document.getElementById('comm_tag_pi_06').value = '';
+            }
+            document.getElementById('comm_tag_fi_01').value = 'FI-' + pad(fiCount++);
+            document.getElementById('comm_tag_fi_02').value = 'FI-' + pad(fiCount++);
+            if (document.getElementById('comm_has_recycle').checked) {
+                document.getElementById('comm_tag_fi_03').value = 'FI-' + pad(fiCount++);
+            } else {
+                document.getElementById('comm_tag_fi_03').value = '';
+            }
+        } else {
+            document.getElementById('comm_tag_pi_01').value = '';
+            document.getElementById('comm_tag_pi_02').value = '';
+            document.getElementById('comm_tag_pi_03').value = '';
+            document.getElementById('comm_tag_pi_04').value = '';
+            document.getElementById('comm_tag_pi_05').value = '';
+            document.getElementById('comm_tag_pi_06').value = '';
+            document.getElementById('comm_tag_fi_01').value = '';
+            document.getElementById('comm_tag_fi_02').value = '';
+            document.getElementById('comm_tag_fi_03').value = '';
+        }
+    }
+
     function toggleCommPID() {
         const hasSoft = document.getElementById('comm_has_softener').checked;
         const hasUf = document.getElementById('comm_has_uf').checked;
@@ -310,6 +372,8 @@
         document.getElementById('comm_pid_ro').style.display = hasRo ? 'block' : 'none';
         document.getElementById('comm_wrap_pi_06').style.display = isRoLarge ? 'flex' : 'none';
         document.getElementById('comm_wrap_fi_03').style.display = hasRec ? 'flex' : 'none';
+
+        updatePIDNumbering();
     }
 
     function getCommChecklist() {
