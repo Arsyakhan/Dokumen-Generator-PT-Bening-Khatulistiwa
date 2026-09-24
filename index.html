@@ -220,7 +220,7 @@
                         <label>Tank Capacity & Unit</label>
                         <div class="flex-row"><input type="text" id="ho_rw_tank_cap" placeholder="ex: 5000" style="flex:2;"><select id="ho_rw_tank_unit" style="flex:1;"><option value="Liters">Liters</option><option value="m3">m3</option></select></div>
                     </div>
-                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_rw_tank_mat" placeholder="ex: PE / FRP"></div>
+                    <div class="input-group"><label>Tank Material</label><input type="text" id="ho_rw_tank_mat" placeholder="ex: PE / FRP / Carbon Steel"></div>
                     <div class="input-group"><label>Tank Qty</label><input type="text" id="ho_rw_tank_qty" placeholder="ex: 1"></div>
                 </div>
 
@@ -360,19 +360,19 @@
                         </div>
                     </div>
                     
-                    <label style="color: #0369a1; font-size: 12px; font-weight: 800; margin-top: 16px; border-bottom: 1px solid #bae6fd; padding-bottom: 4px; display: inline-block;">RO Feed Water Pump</label>
+                    <label class="label-sub">RO Feed Water Pump</label>
                     <div class="flex-row" style="margin-top: 8px;">
-                        <input type="text" id="ho_ro_fwp_brand" placeholder="Brand (ex: CNP)" style="flex:1;">
+                        <input type="text" id="ho_ro_fwp_brand" placeholder="Brand" style="flex:1;">
                         <input type="text" id="ho_ro_fwp_model" placeholder="Model" style="flex:2;">
                         <input type="text" id="ho_ro_fwp_cap" placeholder="m3/hr" style="flex:1;">
                         <input type="text" id="ho_ro_fwp_kw" placeholder="kW" style="flex:1;">
                         <input type="text" id="ho_ro_fwp_qty" placeholder="Qty" style="flex:1;">
                     </div>
 
-                    <label style="color: #0369a1; font-size: 12px; font-weight: 800; margin-top: 16px; border-bottom: 1px solid #bae6fd; padding-bottom: 4px; display: inline-block;">RO Booster Pump</label>
+                    <label class="label-sub">RO Booster Pump</label>
                     <div class="flex-row" style="margin-top: 8px;">
-                        <input type="text" id="ho_ro_bp_brand" placeholder="Brand (ex: GRUNDFOS)" style="flex:1;">
-                        <input type="text" id="ho_ro_bp_model" placeholder="Model (ex: CR 64-5-1)" style="flex:2;">
+                        <input type="text" id="ho_ro_bp_brand" placeholder="Brand" style="flex:1;">
+                        <input type="text" id="ho_ro_bp_model" placeholder="Model (CR 64-5-1)" style="flex:2;">
                         <input type="text" id="ho_ro_bp_kw" placeholder="Power kW" style="flex:1;">
                         <input type="text" id="ho_ro_bp_qty" placeholder="Qty" style="flex:1;">
                     </div>
@@ -400,10 +400,10 @@
                 <!-- B. Anti Scalant System -->
                 <div style="background: #fdf4ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #f5d0fe;">
                     <h5 style="margin: 0 0 16px 0; color: #86198f; font-size: 14px;">B. Anti Scalant System</h5>
-                    <label style="color: #86198f; font-size: 12px; font-weight: 800; border-bottom: 1px solid #f5d0fe; padding-bottom: 4px; display: inline-block;">Chemical Tank Specs</label>
+                    <label style="color: #86198f; font-size: 12px; font-weight: 800; border-bottom: 1px solid #f5d0fe; padding-bottom: 4px;">Chemical Tank Specs</label>
                     <div class="flex-row" style="margin-top: 8px; margin-bottom: 12px;"><input type="text" id="ho_as_tank_mat" placeholder="Material (ex: PE)" style="flex:2;"><input type="text" id="ho_as_tank_cap" placeholder="Cap (Liters)" style="flex:1;"><input type="text" id="ho_as_tank_qty" placeholder="Qty" style="flex:1;"></div>
                     
-                    <label style="color: #86198f; font-size: 12px; font-weight: 800; border-bottom: 1px solid #f5d0fe; padding-bottom: 4px; display: inline-block;">Dosing Pump Specs</label>
+                    <label style="color: #86198f; font-size: 12px; font-weight: 800; border-bottom: 1px solid #f5d0fe; padding-bottom: 4px;">Dosing Pump Specs</label>
                     <div class="flex-row" style="margin-top: 8px; margin-bottom: 12px;"><input type="text" id="ho_as_pump_brand" placeholder="Brand" style="flex:1;"><input type="text" id="ho_as_pump_model" placeholder="Model" style="flex:1;"><input type="text" id="ho_as_pump_cap" placeholder="Cap (LPH)" style="flex:1;"><input type="text" id="ho_as_pump_qty" placeholder="Qty" style="flex:1;"></div>
                     <div class="input-group"><label>Additional Items</label><textarea id="ho_as_additional_items" rows="2" placeholder="ex:&#10;- Static mixer..."></textarea></div>
                 </div>
@@ -411,10 +411,10 @@
                 <!-- C. CIP System dalam RO -->
                 <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; border: 1px solid #bbf7d0;">
                     <h5 style="margin: 0 0 16px 0; color: #166534; font-size: 14px;">C. Chemical Cleaning System (CIP)</h5>
-                    <label style="color: #166534; font-size: 12px; font-weight: 800; border-bottom: 1px solid #bbf7d0; padding-bottom: 4px; display: inline-block;">Cleaning Pump Specs</label>
+                    <label style="color: #166534; font-size: 12px; font-weight: 800; border-bottom: 1px solid #bbf7d0; padding-bottom: 4px;">Cleaning Pump Specs</label>
                     <div class="flex-row" style="margin-top: 8px; margin-bottom: 12px;"><input type="text" id="ho_ro_cip_pump_brand" placeholder="Brand" style="flex:1;"><input type="text" id="ho_ro_cip_pump_model" placeholder="Model" style="flex:1;"><input type="text" id="ho_ro_cip_pump_kw" placeholder="Power kW" style="flex:1;"><input type="text" id="ho_ro_cip_pump_qty" placeholder="Qty" style="flex:1;"></div>
                     
-                    <label style="color: #166534; font-size: 12px; font-weight: 800; border-bottom: 1px solid #bbf7d0; padding-bottom: 4px; display: inline-block;">Chemical/Flushing Tank</label>
+                    <label style="color: #166534; font-size: 12px; font-weight: 800; border-bottom: 1px solid #bbf7d0; padding-bottom: 4px;">Chemical/Flushing Tank</label>
                     <div class="flex-row" style="margin-top: 8px; margin-bottom: 12px;"><input type="text" id="ho_ro_cip_tank_mat" placeholder="Material (ex: PE)" style="flex:2;"><input type="text" id="ho_ro_cip_tank_cap" placeholder="Cap (Liters)" style="flex:1;"><input type="text" id="ho_ro_cip_tank_qty" placeholder="Qty" style="flex:1;"></div>
                     <div class="input-group"><label>Additional Items</label><textarea id="ho_ro_cip_additional_items" rows="2" placeholder="ex:&#10;- CIP Bag Filter..."></textarea></div>
                 </div>
@@ -423,7 +423,7 @@
             <!-- STANDALONE CIP -->
             <div id="ho_sec_cip" class="dynamic-sec ho-style">
                 <h4>Chemical Dosing System (Standalone)</h4>
-                <label style="color: #059669; font-size: 12px; font-weight: 800; border-bottom: 1px solid #d1fae5; padding-bottom: 4px; display: inline-block;">Dosing Pump Specs</label>
+                <label style="color: #059669; font-size: 12px; font-weight: 800; border-bottom: 1px solid #d1fae5; padding-bottom: 4px;">Dosing Pump Specs</label>
                 <div class="flex-row" style="margin-top: 8px; margin-bottom: 16px;">
                     <input type="text" id="ho_std_cip_pump_brand" placeholder="Brand" style="flex:1;">
                     <input type="text" id="ho_std_cip_pump_model" placeholder="Model" style="flex:1;">
@@ -477,7 +477,7 @@
 </div>
 
 <script>
-    // MASUKKAN URL APPS SCRIPT DI SINI
+    // MASUKKAN URL APPS SCRIPT ANDA DI SINI
     const URL_COMM = 'https://script.google.com/macros/s/AKfycbw8azLna99rmPfnO9AnclachEPS0kqP7RwjST2Yy-LHnqO3-lAxsr3WrJNFyXn0Y6juUA/exec';
     const URL_HO = 'https://script.google.com/macros/s/AKfycbzl5BCNuC1gFQWxkccja6HK3k4tADdXNDdF0S17YzqkqfFRRDuReD-eMWSVuZuX_7MR/exec';
 
@@ -551,30 +551,12 @@
         updatePIDNumbering();
     }
 
-    function getCommChecklist() {
-        let list = [
-            "( ) Power supply to electrical panel properly installed.",
-            "( ) Power supply properly joined to electrical Control panel.",
-            "( ) Water drain nozzle properly joined to water drain line."
-        ];
-        if (document.getElementById('comm_has_clarifier').checked) list.push("( ) Inlet Transfer pump properly joined to Outlet Settlement Tank / Raw Water Line.");
-        if (document.getElementById('comm_has_dosing').checked) { list.push("( ) Chemical Dosing line properly joined to main pipe."); list.push("( ) Dosing pump properly joined to Chemical Tank."); }
-        if (document.getElementById('comm_has_birm').checked) { list.push("( ) Inlet Birm Filter properly joined to feed line."); list.push("( ) Outlet Birm Filter properly joined to the next treatment stage."); }
-        if (document.getElementById('comm_has_mmf').checked) { list.push("( ) Inlet MMF properly joined to feed line."); list.push("( ) Outlet MMF properly joined to the next treatment stage."); }
-        if (document.getElementById('comm_has_acf').checked) { list.push("( ) Inlet ACF properly joined to feed line."); list.push("( ) Outlet ACF properly joined to the next treatment stage."); }
-        if (document.getElementById('comm_has_softener').checked) list.push("( ) Softener brine line properly joined to Brine Tank.");
-        if (document.getElementById('comm_has_uf').checked) { list.push("( ) Inlet UF Feed Water Pump properly joined to Feed Water Tank."); list.push("( ) Outlet UF properly joined to UF Permeate Tank."); list.push("( ) Outlet cleaning line UF properly joined to UF Cleaning Tank."); list.push("( ) Inlet UF Backwash pump properly joined to UF Product Tank."); }
-        if (document.getElementById('comm_has_ro').checked) { list.push("( ) Outlet product line RO properly joined to Product water tank and CIP tank."); list.push("( ) Outlet reject line RO properly joined to water drain line."); list.push("( ) Outlet Cleaning/Flushing Pump properly joined to Inlet Cartridge filter."); }
-        if (document.getElementById('comm_has_mixedbed').checked) { list.push("( ) HCl and NaOH chemicals already prepared necessarily."); list.push("( ) Chemical drain nozzle properly joined to chemical drain line."); }
-        return list.join("\n");
-    }
-
     function submitCommissioning() {
         if (!document.getElementById('comm_project_name').value || !document.getElementById('comm_company_name').value) {
             alert('Project Name dan Company Name wajib diisi!'); return;
         }
 
-        const data = { checklist_items: getCommChecklist() };
+        const data = {};
         document.querySelectorAll('#tabComm input, #tabComm select, #tabComm textarea').forEach(input => {
             const key = input.id.replace('comm_', '');
             data[key] = input.type === 'checkbox' ? input.checked : input.value;
